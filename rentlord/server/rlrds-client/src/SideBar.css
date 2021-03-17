@@ -1,0 +1,88 @@
+.sidebar {
+    background-color: rgb(4, 8, 8);
+    height: 100vh;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: center;
+    box-shadow: 1px 1px 1px 1px black;
+    z-index: 99;
+    /* position: fixed; */
+
+}
+
+.siding-contain {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+}
+
+
+/* @media screen and (max-width: 1024px) {
+    .sidebar{
+       width: 20%;
+
+
+    }
+}
+ */
+.sidebar li {
+    /* width: 100%; */
+    list-style: none;
+    color: whitesmoke;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-top: rgba(66, 97, 79, 0.466) solid .8px;
+    cursor: pointer;
+
+}
+
+
+
+.sidebar ul {
+    width: 100%;
+    border-bottom: rgba(66, 97, 79, 0.466) solid .8px;
+    box-shadow: .3px .3px .3px .3px black;    
+    opacity: 2;
+
+}
+
+ .list-item {
+     /* align-self: center; */
+    text-align: center;
+    text-decoration: none;
+    list-style: none;
+    color: white;
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+
+}
+
+.list-item:hover {
+    list-style: none;
+    background-color: rgba(66, 97, 79, 0.466);
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-top: whitesmoke dotted .2px;
+    cursor: pointer;
+
+}
+
+.username {
+    margin: auto 0;
+     width: 100%;
+     padding-bottom: 20px;
+     text-align: center;
+     border-top: 1px solid silver;
+     padding-top: 50px;
+     padding-bottom: 50px;
+
+
+}

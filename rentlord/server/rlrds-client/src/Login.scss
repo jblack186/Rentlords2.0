@@ -1,0 +1,143 @@
+$primaryColor: #2a37e8;
+$primaryColorHover: #3446cd;
+$secondaryColor: #f2f5f7;
+$thirdColor: #222629;
+
+$sm: 600px; //breakpoint for smaller devices
+$smMd: 800px;
+$md: 1000px;
+$mdLg: 1200px;
+$lg: 1800px; //desktop
+
+@mixin respond($breakpoint) {
+  @if $breakpoint == sm {
+    @media (max-width: $sm) {
+      @content;
+    }
+  } @else if $breakpoint == smMd {
+    @media (max-width: $smMd) {
+      @content;
+    }
+  } @else if $breakpoint == md {
+    @media (max-width: $md) {
+      @content;
+    }
+  } @else if $breakpoint == mdLg {
+    @media (max-width: $mdLg) {
+      @content;
+    }
+  } @else if $breakpoint == lg {
+    @media (max-width: $lg) {
+      @content;
+    }
+  }
+}
+
+h2 {
+  font-size: 3rem;
+}
+
+h4 {
+  font-size: 2.4rem;
+}
+
+p {
+  font-size: 1.2rem;
+}
+
+.register-contain {
+  width: 100%;
+  height: 100vh;
+  .register-header {
+    height: 10%;
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 200px;
+      margin-left: 20px;
+    }
+  }
+
+  .login-content {
+    display: flex;
+    height: 90%;
+
+    .carousel {
+      width: 100%;
+      background: $primaryColor;
+      border-top-right-radius: 5px;;
+    }
+
+    .slideTwo {
+      background: $primaryColorHover;
+
+    }
+
+    .login-content-left {
+      height: 100%;
+
+      .header-info {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        text-align: left;
+
+        .header-text {
+          color: white;
+          width: 60%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          h2 {
+            width: 70%;
+
+            margin-bottom: 50px;
+          }
+
+          p {
+            width: 70%;
+            line-height: 27px;
+          }
+        }
+      }
+
+      img {
+        width: 300px;
+      }
+
+      img.hands {
+        width: 350px;
+      }
+    }
+    .login-content-right {
+      width: 40%;
+      height: 100%;
+      color: $primaryColor;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: $secondaryColor;
+
+
+      .create {
+        font-size: 0.9rem;
+        margin-bottom: 100px;
+      }
+      .spin {
+        text-align: center;
+        margin-bottom: 50px;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50px;
+}
