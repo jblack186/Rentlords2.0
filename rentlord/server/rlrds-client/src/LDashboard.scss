@@ -1,0 +1,231 @@
+$primaryColor: #2a37e8;
+$primaryColorHover: #3446cd;
+$secondaryColor: #f2f5f7;
+$thirdColor: #222629;
+
+$sm: 600px; //breakpoint for smaller devices
+$smMd: 800px;
+$md: 1000px;
+$mdLg: 1200px;
+$lg: 1800px; //desktop
+
+@mixin respond($breakpoint) {
+  @if $breakpoint == sm {
+    @media (max-width: $sm) {
+      @content;
+    }
+  } @else if $breakpoint == smMd {
+    @media (max-width: $smMd) {
+      @content;
+    }
+  } @else if $breakpoint == md {
+    @media (max-width: $md) {
+      @content;
+    }
+  } @else if $breakpoint == mdLg {
+    @media (max-width: $mdLg) {
+      @content;
+    }
+  } @else if $breakpoint == lg {
+    @media (max-width: $lg) {
+      @content;
+    }
+  }
+}
+
+.ldashboard-contain {
+  height: 100vh;
+  display: flex;
+  
+
+nav {
+  width: 25%;
+  height: 100%;
+  background: $primaryColor;
+
+  @include respond(mdLg) {
+    width: 35%;
+  }
+
+  @include respond(smMd) {
+    display: none;
+  }
+
+
+}
+
+.dashboard-content {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  .top-dash {
+    margin: 0 auto;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+
+    img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50px;
+    }
+  }
+  .order-date {
+    margin: 0 auto;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+
+
+    ul {
+      display: flex;
+      justify-content: space-between;
+      width: 50%;
+
+
+      @include respond(mdLg) {
+        width: 45%;
+      }
+
+
+      @include respond(md) {
+        width: 50%;
+      }
+
+     li {
+      list-style: none;
+     }
+    }
+
+    .dates {
+      display: flex;
+      justify-content: space-between;
+      @include respond(mdLg) {
+      }
+
+      p {
+        padding-left: 7px;
+        padding-right: 7px;
+
+      }
+      
+    }
+  }
+}
+
+.bar-dash {
+  width: 90%;
+  height: 40px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-weight: bold;
+  border-radius: 5px;
+  background: $secondaryColor;
+  ul {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+
+    li {
+      list-style: none;
+    }
+  }
+}
+
+.mid-dash {
+  margin: 0 auto;
+  height: 70%;
+  width: 90%;
+  // background: $secondaryColor;
+  border-radius: 5px;
+
+  .user-content {
+
+    width: 100%;
+    height: 55px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    border: 1px solid gray;
+    border-radius: 5px;
+
+    li {
+      list-style: none;
+    }
+
+    .name-pic {
+      display: flex;
+      width: 20%;
+      justify-content: center;
+
+
+      .user-pic {
+        width: 20px;
+        background: white;
+        margin-right: 5px;
+
+      }
+
+    }
+
+    .user-addr {
+      width: 30%;
+    }
+
+    .user-date {
+      width: 25%;
+    }
+
+    .user-status {
+      width: 15%;
+    }
+
+    .user-action {
+      width: 10%;
+      display: flex;
+      justify-content: space-around;
+
+    }
+
+
+
+
+  }
+
+}
+}
+
+.react-datepicker-wrapper,
+.react-datepicker__input-container,
+.react-datepicker__input-container input {
+    display: block;
+    border: none;
+    background: $secondaryColor;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.name {
+  width: 20%;
+}
+
+.addr {
+  width: 35%;
+}
+
+.date {
+  width: 25%;
+}
+
+.status {
+  width: 15%;
+}
+
+.action {
+  width: 10%;
+}
