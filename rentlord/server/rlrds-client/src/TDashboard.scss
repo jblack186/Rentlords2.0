@@ -166,7 +166,6 @@ nav.nav-dash {
 
       .plus-box {
         height: 20px;
-
         background: $primaryColor;
         color: white;
         cursor: pointer;
@@ -178,13 +177,27 @@ nav.nav-dash {
         padding: 8px;
         transition-duration: .3s;
         
+
         p {
           font-size: .9rem;
         }
 
+        input {
+        }
       }
       .plus-box:hover {
         background: $primaryColor;
+
+      }
+
+      .plus-box-open {
+        padding: 0;
+        width: 30%;
+        align-self: flex-end;
+
+        .box-pic {
+          width: 50px;
+        }
 
       }
 
@@ -309,3 +322,13 @@ nav.nav-dash {
   }
 }
 
+
+label {
+  background-color: indigo;
+  color: white;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
