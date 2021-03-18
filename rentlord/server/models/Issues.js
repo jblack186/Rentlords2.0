@@ -17,7 +17,6 @@ const issueSchema = new Schema({
     _userName: String,
     _userLandlord: String,
     // _userTenant: String,
-    dateSent: Date
 
 });
 
