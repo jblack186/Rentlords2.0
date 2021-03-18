@@ -5,19 +5,26 @@
   display: flex;
 }
 
+@media (max-width: 1200px) {
+  .ldashboard-contain {
+    min-height: 100vh;
+    height: 100%;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+}
+
 .ldashboard-contain nav {
   width: 25%;
   height: 100%;
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
   background: #2a37e8;
 }
 
 @media (max-width: 1200px) {
-  .ldashboard-contain nav {
-    width: 35%;
-  }
-}
-
-@media (max-width: 800px) {
   .ldashboard-contain nav {
     display: none;
   }
@@ -36,6 +43,12 @@
       justify-content: space-around;
 }
 
+@media (max-width: 1200px) {
+  .ldashboard-contain .dashboard-content {
+    width: 100%;
+  }
+}
+
 .ldashboard-contain .dashboard-content .top-dash {
   margin: 0 auto;
   width: 90%;
@@ -47,10 +60,25 @@
           justify-content: space-between;
 }
 
+@media (max-width: 1200px) {
+  .ldashboard-contain .dashboard-content .top-dash {
+    margin-top: 20px;
+  }
+}
+
+.ldashboard-contain .dashboard-content .top-dash .welcome {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  color: #2a37e8;
+  font-weight: bold;
+}
+
 .ldashboard-contain .dashboard-content .top-dash img {
   width: 60px;
   height: 60px;
   border-radius: 50px;
+  margin-left: 15px;
 }
 
 .ldashboard-contain .dashboard-content .order-date {
@@ -62,6 +90,16 @@
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+}
+
+@media (max-width: 1200px) {
+  .ldashboard-contain .dashboard-content .order-date {
+    margin-top: 20px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
 }
 
 .ldashboard-contain .dashboard-content .order-date ul {
@@ -76,13 +114,10 @@
 
 @media (max-width: 1200px) {
   .ldashboard-contain .dashboard-content .order-date ul {
-    width: 45%;
-  }
-}
-
-@media (max-width: 1000px) {
-  .ldashboard-contain .dashboard-content .order-date ul {
-    width: 50%;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    width: 90%;
+    margin-bottom: 10px;
   }
 }
 
@@ -121,6 +156,13 @@
   background: #f2f5f7;
 }
 
+@media (max-width: 1200px) {
+  .ldashboard-contain .bar-dash {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+
 .ldashboard-contain .bar-dash ul {
   width: 100%;
   display: -webkit-box;
@@ -142,6 +184,13 @@
   border-radius: 5px;
 }
 
+@media (max-width: 1200px) {
+  .ldashboard-contain .mid-dash {
+    width: 95%;
+    font-size: .9rem;
+  }
+}
+
 .ldashboard-contain .mid-dash .user-content {
   width: 100%;
   height: 55px;
@@ -152,8 +201,14 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  border: 1px solid gray;
+  border: 1px solid lightgray;
   border-radius: 5px;
+}
+
+@media (max-width: 1200px) {
+  .ldashboard-contain .mid-dash .user-content {
+    height: 70px;
+  }
 }
 
 .ldashboard-contain .mid-dash .user-content li {
@@ -170,6 +225,12 @@
           justify-content: center;
 }
 
+@media (max-width: 1200px) {
+  .ldashboard-contain .mid-dash .user-content .name-pic {
+    width: 30%;
+  }
+}
+
 .ldashboard-contain .mid-dash .user-content .name-pic .user-pic {
   width: 20px;
   background: white;
@@ -180,12 +241,30 @@
   width: 30%;
 }
 
+@media (max-width: 1200px) {
+  .ldashboard-contain .mid-dash .user-content .user-addr {
+    display: none;
+  }
+}
+
 .ldashboard-contain .mid-dash .user-content .user-date {
   width: 25%;
 }
 
+@media (max-width: 1200px) {
+  .ldashboard-contain .mid-dash .user-content .user-date {
+    width: 30%;
+  }
+}
+
 .ldashboard-contain .mid-dash .user-content .user-status {
   width: 15%;
+}
+
+@media (max-width: 1200px) {
+  .ldashboard-contain .mid-dash .user-content .user-status {
+    width: 20%;
+  }
 }
 
 .ldashboard-contain .mid-dash .user-content .user-action {
@@ -197,6 +276,12 @@
       justify-content: space-around;
 }
 
+@media (max-width: 1200px) {
+  .ldashboard-contain .mid-dash .user-content .user-action {
+    width: 20%;
+  }
+}
+
 .react-datepicker-wrapper,
 .react-datepicker__input-container,
 .react-datepicker__input-container input {
@@ -205,6 +290,7 @@
   background: #f2f5f7;
   border-radius: 5px;
   text-align: center;
+  height: 100%;
 }
 
 .name {
@@ -213,6 +299,12 @@
 
 .addr {
   width: 35%;
+}
+
+@media (max-width: 1200px) {
+  .addr {
+    display: none;
+  }
 }
 
 .date {
@@ -225,5 +317,32 @@
 
 .action {
   width: 10%;
+}
+
+.mobile {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .mobile {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    height: 50px;
+    background: #2a37e8;
+    color: white;
+    font-size: 1.9rem;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+}
+
+.mobile .navBar {
+  cursor: pointer;
 }
 /*# sourceMappingURL=LDashboard.css.map */

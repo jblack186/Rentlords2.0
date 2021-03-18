@@ -6,6 +6,7 @@ const plumbingSchema = new Schema({
     pending : {type : Boolean , default : true},
     recieved: {type: Boolean, default: false},
     completed: {type: Boolean, default: false},
+    date: Date.now()
 
 })
 

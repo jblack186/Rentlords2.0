@@ -9,25 +9,45 @@ import "./LDashboard.css";
 import Pic from "./img/profileHead.jpeg";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { faUser, faHammer,faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faHammer,
+  faChevronDown,
+  faBars,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import User from "./img/profile-user.svg";
+import Avatars from "@dicebear/avatars";
+import sprites from "@dicebear/avatars-identicon-sprites";
 
-const LDashboard = () => {
+const LDashboard = (props) => {
   const [startDate, setStartDate] = useState(new Date());
+  
+
+  let options = {};
+  let avatars = new Avatars(sprites, options);
+  let svg = avatars.create("custom-seed");
+
+  console.log('props', props)
 
   return (
     <section className="ldashboard-contain">
       <nav className="nav-dash">
         <Navbar />
       </nav>
+      <div className="mobile">
+        <FontAwesomeIcon className="navBar" icon={faBars} />
+      </div>
       <section className="dashboard-content">
         <div className="top-dash">
           <div className="issues-header">
             <h3>Issues</h3>
             <p>0 orders found</p>
           </div>
+          <div className='welcome'>
+  <p>Welcome back, {props.landlord.username}</p>
           <img src={Pic} alt="avatar" />
+          </div>
         </div>
         <div className="order-date">
           <ul>
@@ -61,18 +81,18 @@ const LDashboard = () => {
         <div className="mid-dash">
           <div className="user-content">
             <div className="name-pic">
-              <img className="user-pic" src={User} />
+              <img
+                className="user-pic"
+                src="https://avatars.dicebear.com/api/identicon/:seed.svg?colors=blue"
+              />
               <li className="user-name">Susan Johnson</li>
             </div>
             <li className="user-addr">32 Madison Terr</li>
             <li className="user-date">12 March 2020</li>
             <li className="user-status">Pending</li>
             <li className="user-action">
-              
               <FontAwesomeIcon className="user-pic" icon={faHammer} />
               <FontAwesomeIcon className="user-pic" icon={faChevronDown} />
-
-              
             </li>
           </div>
         </div>

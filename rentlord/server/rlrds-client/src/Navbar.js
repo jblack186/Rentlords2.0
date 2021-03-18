@@ -32,7 +32,7 @@ const Navbar = () => {
           <div className='icon-item-holder'>
         <FontAwesomeIcon className='icon-item' icon={faDoorClosed} />
 
-        <li>Logout</li>
+        <a href='/api/logout'><li>Logout</li></a>
         </div>
         </div>
 

@@ -1,0 +1,292 @@
+$primaryColor: #2a37e8;
+$primaryColorHover: #3446cd;
+$secondaryColor: #f2f5f7;
+$thirdColor: rgb(43, 43, 97);
+
+$sm: 600px; //breakpoint for smaller devices
+$smMd: 800px;
+$md: 1000px;
+$mdLg: 1200px;
+$lg: 1800px; //desktop
+
+
+@mixin respond($breakpoint) {
+  @if $breakpoint == sm {
+    @media (max-width: $sm) {
+      @content;
+    }
+  } @else if $breakpoint == smMd {
+    @media (max-width: $smMd) {
+      @content;
+    }
+  } @else if $breakpoint == md {
+    @media (max-width: $md) {
+      @content;
+    }
+  } @else if $breakpoint == mdLg {
+    @media (max-width: $mdLg) {
+      @content;
+    }
+  } @else if $breakpoint == lg {
+    @media (max-width: $lg) {
+      @content;
+    }
+  }
+}
+
+
+h2 { 
+  font-size: 2rem;
+}
+
+
+.tdashboard-contain {
+  height: 100vh;
+  display: flex;
+  
+  @include respond(mdLg) {
+    min-height: 100vh;
+    height: 100%;
+    flex-direction: column;
+  }
+
+  
+
+nav.nav-dash {
+  width: 25%;
+  height: 100%;
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
+
+  background: $primaryColor;
+
+  @include respond(mdLg) {
+    display: none;
+  }
+
+
+
+}
+
+.tdashboard-content {
+  background: white;
+  border-radius: 40px;
+  
+  width: 55%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  @include respond(mdLg) {
+    width: 100%;
+  }
+
+  h2 {
+    padding-top: 50px;
+
+    font-size: 1.5rem;
+    margin-left: 30px;
+
+    span {
+      color: $primaryColor;
+      font-size: 1.3rem;
+      padding-left: 5px;
+    }
+  }
+
+  .top-content {
+    width: 40%;
+  }
+
+  .middle-content {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    .issues {
+      width: 90%;
+      height: 130px;
+      border-radius: 10px;
+      border: none;
+      background: $secondaryColor;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+
+      h3 {
+        color: $thirdColor;
+        width: 25%;
+      }
+      form {
+        height: 75%;
+        width: 40%;
+        display: flex;
+
+        textarea {
+          height: 100%;
+          width: 100%;
+          border: none;
+
+        }
+        button {
+
+          border: none;
+          background: $thirdColor;
+          color: white;
+          cursor: pointer;
+          border-top-right-radius: 10px;
+        }
+        button:hover {
+          color: $thirdColor;
+          background: white;
+
+        }
+      }
+
+      .plus-box {
+        height: 20%;
+
+        background: $thirdColor;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        padding: 10px;
+        transition-duration: .3s;
+        
+        p {
+          font-size: .9rem;
+        }
+
+      }
+      .plus-box:hover {
+        background: $primaryColor;
+
+      }
+
+
+    }
+
+  }
+
+}
+
+.notifications {
+  width: 20%;
+  height: 100vh;
+  border-top-left-radius: 40px;
+  border-bottom-left-radius: 40px;
+  background: $secondaryColor;
+
+  @include respond(mdLg) {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .top-notifications {
+    margin: 0 auto;
+    padding-top: 50px;
+    width: 90%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 10%;
+      border-bottom: 1px solid $primaryColor;
+    img {
+      width: 35px;
+    }
+
+    p {
+      color: $primaryColor;
+      font-weight: bold;
+    }
+  }
+  .bottom-notifications {
+    margin: 0 auto;
+
+    width: 90%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    h4 {
+      align-self: flex-start;
+      font-size: 1.7rem;
+      color: $primaryColor;
+    }
+
+    .issue-content {
+      width: 100%;
+      display: flex;
+      border-bottom: 1px solid $primaryColor;
+
+
+      ul {
+        padding: 0;
+        margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      width: 100%;
+
+      li {
+        list-style: none;
+      }
+      .issue-menu {
+        width: 20%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+
+        .arrowDown {
+          cursor: pointer;
+        }
+      }
+    }
+    }
+  }
+}
+
+
+}
+
+
+
+.react-datepicker-wrapper,
+.react-datepicker__input-container,
+.react-datepicker__input-container input {
+    display: block;
+    border: none;
+    background: $secondaryColor;
+    border-radius: 5px;
+    text-align: center;
+    height: 100%;
+}
+
+
+.mobile {
+  display: none;
+
+  @include respond(mdLg) {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    background: $primaryColor;
+    color: white;
+    font-size: 1.9rem;
+    align-items: center;
+    justify-content: center;
+  } 
+  .navBar {
+    cursor: pointer;
+  }
+}

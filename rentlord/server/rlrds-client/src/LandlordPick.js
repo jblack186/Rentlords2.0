@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
 
-const LandlordPick = () => {
+const LandlordPick = (props) => {
     const [chooseLandlordPick, setChooseLandlordPick] = useState('');
     const history = useHistory();
 
@@ -21,13 +21,14 @@ const LandlordPick = () => {
 
 
 
+
     // allows user to pick their landlord - will update the tenants array on landlords as well
     const picky = e => {
         e.preventDefault();
         console.log(e.target.value)
         axios.put('/api/landlords', {landlord: e.target.value})
             .then(res => {
-                
+                console.log(res.data)
             })
             .catch(err => {
                 console.log(err)
@@ -35,7 +36,7 @@ const LandlordPick = () => {
             history.push('/tenant-dashboard')
     }
 
-
+console.log('choose', chooseLandlordPick)
 
     return (
         <div>
