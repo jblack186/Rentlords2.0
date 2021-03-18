@@ -106,43 +106,67 @@ h2 {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  position: relative;
 }
 
 .tdashboard-contain .tdashboard-content .middle-content .issues h3 {
-  color: #2b2b61;
+  color: #2a37e8;
   width: 25%;
 }
 
 .tdashboard-contain .tdashboard-content .middle-content .issues form {
   height: 75%;
-  width: 40%;
+  width: 70%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .tdashboard-contain .tdashboard-content .middle-content .issues form textarea {
   height: 100%;
-  width: 100%;
+  width: 55%;
   border: none;
 }
 
 .tdashboard-contain .tdashboard-content .middle-content .issues form button {
+  height: 40%;
+  width: 10%;
   border: none;
-  background: #2b2b61;
+  background: #2a37e8;
   color: white;
   cursor: pointer;
-  border-top-right-radius: 10px;
+  border-radius: 10px;
 }
 
 .tdashboard-contain .tdashboard-content .middle-content .issues form button:hover {
-  color: #2b2b61;
+  color: #2a37e8;
   background: white;
 }
 
+.tdashboard-contain .tdashboard-content .middle-content .issues form .anyPics {
+  font-size: .9rem;
+  position: absolute;
+  top: 0;
+  right: 10px;
+  font-weight: bold;
+  color: #2b2b61;
+}
+
+.tdashboard-contain .tdashboard-content .middle-content .issues .plane {
+  font-size: 1rem;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+
 .tdashboard-contain .tdashboard-content .middle-content .issues .plus-box {
-  height: 20%;
-  background: #2b2b61;
+  height: 20px;
+  background: #2a37e8;
   color: white;
   cursor: pointer;
   display: -webkit-box;
@@ -159,7 +183,7 @@ h2 {
       -ms-flex-align: center;
           align-items: center;
   border-radius: 10px;
-  padding: 10px;
+  padding: 8px;
   -webkit-transition-duration: .3s;
           transition-duration: .3s;
 }
@@ -201,7 +225,7 @@ h2 {
       -ms-flex-pack: justify;
           justify-content: space-between;
   height: 10%;
-  border-bottom: 1px solid #2a37e8;
+  border-bottom: 1px solid #f2f5f7;
 }
 
 .tdashboard-contain .notifications .top-notifications img {
@@ -209,7 +233,7 @@ h2 {
 }
 
 .tdashboard-contain .notifications .top-notifications p {
-  color: #2a37e8;
+  color: #2b2b61;
   font-weight: bold;
 }
 
@@ -235,7 +259,7 @@ h2 {
   -ms-flex-item-align: start;
       align-self: flex-start;
   font-size: 1.7rem;
-  color: #2a37e8;
+  color: #2b2b61;
 }
 
 .tdashboard-contain .notifications .bottom-notifications .issue-content {
@@ -243,7 +267,7 @@ h2 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  border-bottom: 1px solid #2a37e8;
+  border-bottom: 1px solid #2b2b61;
 }
 
 .tdashboard-contain .notifications .bottom-notifications .issue-content ul {

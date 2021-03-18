@@ -30,7 +30,7 @@ module.exports = (server) => {
             _userName: req.user.wholeName,
             _userLandlord,
             // _userTenant,
-            dateSent: Date.now()
+           
 
         });
 
@@ -63,7 +63,7 @@ module.exports = (server) => {
     server.put('/api/plumbing', async (req, res) => {
         const { plumbing } = req.body;
         console.log()
-        await Issues.findOneAndUpdate({_user: req.user._id}, {$push: {plumbing: {body: plumbing, pending: true, recieved: false, completed: false}}})
+        await Issues.findOneAndUpdate({_user: req.user._id}, {$push: {plumbing: {body: plumbing, pending: true, recieved: false, completed: false, dateSent: Date.now()}}})
         try {
             res.status(202).json({body: plumbing, pending: true, recieved: false, completed: false})
         }

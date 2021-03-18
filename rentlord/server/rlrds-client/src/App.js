@@ -29,9 +29,12 @@ console.log(landlord)
     axios.get('/api/tenants-issues')
         .then(res => {
             setIssues(res.data)
-    
+            console.log('response', res)
+            
         })
         .catch(err => {
+            console.log('err', err)
+
         })
     axios.get('/api/tenant')
         .then(res => {
