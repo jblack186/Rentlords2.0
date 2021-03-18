@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import Login from './Login';
 import { Route } from 'react-router-dom';
-import TenantDashboard from './TenantDashboard';
+import TDashboard from './TDashboard';
 import LDashboard from './LDashboard';
 import Role from './Role';
 import LandlordPick from './LandlordPick';
 import Setting from './Setting';
 import axios from 'axios';
+import './TDashboard.css';
 
 
 
@@ -15,7 +16,7 @@ const App = e => {
     const [issues, setIssues] = useState([]);
     const [tenant, setTenant] = useState();
  
-
+console.log(landlord)
   useEffect(() => {
 
     axios.get('/api/landlord-info')
@@ -110,7 +111,7 @@ const changeSituation = e => {
   return (
     <div>
             <Route exact path='/login' render= {(props) => { return <Login  {...props}  />}} />
-            <Route exact path='/tenant-dashboard' render= {(props) => { return <TenantDashboard tenant={tenant} {...props}  />}} />
+            <Route exact path='/tenant-dashboard' render= {(props) => { return <TDashboard tenant={tenant} {...props}  />}} />
             <Route exact path='/landlord-dashboard' render= {(props) => { return <LDashboard changeSituation={changeSituation} changeCompleted={changeCompleted} changeRecieved={changeRecieved} landlord={landlord} issues={issues} {...props}  />}} />
             <Route exact path='/role' render= {(props) => { return <Role  {...props}  />}} />
             <Route exact path='/landlord-pick' render= {(props) => { return <LandlordPick  {...props}  />}} />

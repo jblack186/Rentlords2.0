@@ -28,7 +28,7 @@ const Role = () => {
     const newRole = e => {
         axios.put('/api/role', {role: chooseRole} )
         .then(response => {
-                    console.log(response)
+                    console.log('response',response)
 
         })
         .catch(err => {

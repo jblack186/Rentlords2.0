@@ -34,7 +34,7 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-family: 'Quicksand', sans-serif;
 }
 
@@ -78,7 +78,8 @@
   list-style: none;
   color: white;
   margin-left: 15px;
-  font-size: 2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .navbar-contain ul .list-icon:hover {
