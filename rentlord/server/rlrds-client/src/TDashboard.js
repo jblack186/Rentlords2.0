@@ -46,14 +46,18 @@ const TDashboard = (props) => {
   const [click, setClick] = useState(false);
 
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(['', '']);
   const [imageName, setImageName] = useState("");
   const [newPic, setNewPic] = useState(false);
+  const [elPic, setElPic] = useState(false);
+  const [plPic, setPlPic] = useState(false);
+  const [caPic, setCaPic] = useState(false);
+  const [coPic, setCoPic] = useState(false);
 
   let options = {};
   let avatars = new Avatars(sprites, options);
   let svg = avatars.create("custom-seed");
-
+console.log('image', image)
   //cloudinary upload
   const uploadImage = async (e) => {
     const files = e.target.files;
@@ -72,7 +76,7 @@ const TDashboard = (props) => {
       );
       const file = await res.json();
 
-      setImage(file.secure_url);
+      setImage([file.secure_url, image[1]]);
       setImageName(`${file.public_id}.${file.format}`);
       setLoading(false);
     } else {
@@ -138,14 +142,13 @@ const TDashboard = (props) => {
       .catch((err) => {});
   }, []);
 
-  console.log("issues", issues);
-
   const plumbingIssue = (e) => {
     e.preventDefault();
     if (plumbing.length > 0) {
       axios
         .put("/api/plumbing", { plumbing: plumbing })
         .then((response) => {
+          setPlPic(false);
           setTempPlumbing([...tempPlumbing, plumbing]);
           setTempCount(tempCount + 1);
         })
@@ -154,12 +157,35 @@ const TDashboard = (props) => {
     }
   };
 
+  const plPicture = () => {
+    setPlPic(true);
+    setImage([image[0], 'plumbing'])
+  };
+
+  const elPicture = () => {
+    setElPic(true);
+    setImage([image[0], 'electrical'])
+
+  };
+
+  const caPicture = () => {
+    setCaPic(true);
+    setImage([image[0], 'carpentry'])
+
+  };
+  const coPicture = () => {
+    setCoPic(true);
+    setImage([image[0], 'complaints'])
+
+  };
+
   const electricalIssue = (e) => {
     e.preventDefault();
     if (electrical.length > 0) {
       axios
         .put("/api/electrical", { electrical: electrical })
         .then((response) => {
+          setElPic(false);
           setTempElectrical([...tempElectrical, electrical]);
           setTempCount(tempCount + 1);
         })
@@ -174,6 +200,7 @@ const TDashboard = (props) => {
       axios
         .put("/api/carpentry", { carpentry: carpentry })
         .then((response) => {
+          setCaPic(false);
           setTempCarpentry([...tempCarpentry, carpentry]);
           setTempCount(tempCount + 1);
         })
@@ -187,6 +214,7 @@ const TDashboard = (props) => {
       axios
         .put("/api/complaints", { complaints: complaints })
         .then((response) => {
+          setCoPic(false);
           setTempComplaints([...tempComplaints, complaints]);
           setTempCount(tempCount + 1);
         })
@@ -250,11 +278,22 @@ const TDashboard = (props) => {
                 <p className="anyPics">Any Pictures?</p>
               ) : null}
 
-              <div className="plus-box">
-                <p onClick={uploadImage}>
-                  {" "}
-                  <FontAwesomeIcon className="camera" icon={faCamera} />
-                </p>
+              <div className={!elPic ? "plus-box" : "plus-box-open"}>
+                {image[0].length > 0 && image[1] === 'electrical' ? <img className='box-pic' src={image[0]} alt='your-pic' /> : null}
+                {!elPic ? (
+                  <p onClick={elPicture}>
+                    {" "}
+                    <FontAwesomeIcon className="camera" icon={faCamera} />
+                  </p>
+                ) : (
+                  <input
+                    name="file"
+                    type="file"
+                    onChange={uploadImage}
+                    className="file"
+                    placeholder="Upload an image"
+                  />
+                )}
               </div>
 
               <button type="submit">
@@ -269,11 +308,23 @@ const TDashboard = (props) => {
               {plumbing.length > 0 ? (
                 <p className="anyPics">Any Pictures?</p>
               ) : null}
-              <div className="plus-box">
-                <p>                  <FontAwesomeIcon className="camera" icon={faCamera} />
-</p>
+              <div className={!plPic ? "plus-box" : "plus-box-open"}>
+              {image[0].length > 0 && image[1] === 'plumbing' ? <img className='box-pic' src={image[0]} alt='your-pic' /> : null}
+                {!plPic ? (
+                  <p onClick={plPicture}>
+                    {" "}
+                    <FontAwesomeIcon className="camera" icon={faCamera} />
+                  </p>
+                ) : (
+                  <input
+                    name="file"
+                    type="file"
+                    onChange={uploadImage}
+                    className="file"
+                    placeholder="Upload an image"
+                  />
+                )}
               </div>
-
               <button type="submit">
                 {" "}
                 <FontAwesomeIcon className="plane" icon={faPaperPlane} />
@@ -288,11 +339,13 @@ const TDashboard = (props) => {
               {carpentry.length > 0 ? (
                 <p className="anyPics">Any Pictures?</p>
               ) : null}
-              <div className="plus-box">
-                <p>                  <FontAwesomeIcon className="camera" icon={faCamera} />
-</p>
+<div className={!caPic ? "plus-box" : "plus-box-open"}>
+{image[0].length > 0 && image[1] === 'carpentry' ? <img className='box-pic' src={image[0]} alt='your-pic' /> : null}
+                {!caPic ? <p onClick={caPicture}>
+                  {" "}
+                  <FontAwesomeIcon className="camera" icon={faCamera} />
+                </p> : <input name="file" type="file" onChange={uploadImage} className="file" placeholder='Upload an image' />}
               </div>
-
               <button type="submit">
                 <FontAwesomeIcon className="plane" icon={faPaperPlane} />
               </button>
@@ -301,15 +354,20 @@ const TDashboard = (props) => {
           <div className="issues complaints">
             <h3>Complaints</h3>
             <form onSubmit={complaintsIssue}>
-              <textarea onChange={changeComplaints} value={complaints}></textarea>
+              <textarea
+                onChange={changeComplaints}
+                value={complaints}
+              ></textarea>
               {complaints.length > 0 ? (
                 <p className="anyPics">Any Pictures?</p>
               ) : null}
-              <div className="plus-box">
-                <p>                  <FontAwesomeIcon className="camera" icon={faCamera} />
-</p>
+<div className={!coPic ? "plus-box" : "plus-box-open"}>
+{image[0].length > 0 && image[1] === 'complaints' ? <img className='box-pic' src={image[0]} alt='your-pic' /> : null}
+                {!coPic ? <p onClick={coPicture}>
+                  {" "}
+                  <FontAwesomeIcon className="camera" icon={faCamera} />
+                </p> : <input name="file" type="file" onChange={uploadImage} className="file" placeholder='Upload an image' />}
               </div>
-
               <button type="submit">
                 <FontAwesomeIcon className="plane" icon={faPaperPlane} />
               </button>
@@ -331,9 +389,11 @@ const TDashboard = (props) => {
             <ul>
               <li>Electrical</li>
               <div className="issue-menu">
-              <p>{issues.electrical
+                <p>
+                  {issues.electrical
                     ? issues.electrical.length + tempElectrical.length
-                    : 0}</p>
+                    : 0}
+                </p>
                 <FontAwesomeIcon className="arrowDown" icon={faChevronDown} />
               </div>
             </ul>
@@ -356,9 +416,11 @@ const TDashboard = (props) => {
             <ul>
               <li>Carpentry</li>
               <div className="issue-menu">
-              <p>{issues.carpentry
+                <p>
+                  {issues.carpentry
                     ? issues.carpentry.length + tempCarpentry.length
-                    : 0}</p>
+                    : 0}
+                </p>
 
                 <FontAwesomeIcon className="arrowDown" icon={faChevronDown} />
               </div>
@@ -368,9 +430,11 @@ const TDashboard = (props) => {
             <ul>
               <li>Complaints</li>
               <div className="issue-menu">
-              <p>{issues.complaints
+                <p>
+                  {issues.complaints
                     ? issues.complaints.length + tempComplaints.length
-                    : 0}</p>
+                    : 0}
+                </p>
 
                 <FontAwesomeIcon className="arrowDown" icon={faChevronDown} />
               </div>
