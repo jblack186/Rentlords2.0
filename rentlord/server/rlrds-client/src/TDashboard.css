@@ -110,6 +110,8 @@ h2 {
 }
 
 .tdashboard-contain .tdashboard-content .middle-content .issues h3 {
+  -ms-flex-item-align: start;
+      align-self: flex-start;
   color: #2a37e8;
   width: 25%;
 }
@@ -332,6 +334,10 @@ h2 {
       justify-content: space-around;
 }
 
+.tdashboard-contain .notifications .bottom-notifications .issue-content ul .issue-menu .list-count {
+  font-weight: bold;
+}
+
 .tdashboard-contain .notifications .bottom-notifications .issue-content ul .issue-menu .arrowDown {
   cursor: pointer;
 }
@@ -351,6 +357,62 @@ h2 {
   -webkit-box-direction: reverse;
       -ms-flex-direction: column-reverse;
           flex-direction: column-reverse;
+}
+
+.issue-item .item-reverse {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: column-reverse;
+          flex-direction: column-reverse;
+}
+
+.issue-item .item-list-container {
+  margin-bottom: 10px;
+  border-bottom: 1px solid lightgray;
+}
+
+.issue-item .item-list-container ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.issue-item .item-list-container ul li.status {
+  -ms-flex-item-align: start;
+      align-self: flex-start;
+  font-weight: bold;
+}
+
+.issue-item .item-list-container ul li.body {
+  line-height: 25px;
+  font-size: .9rem;
+}
+
+.issue-item .item-list-container ul li.item-date {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: .9rem;
+}
+
+.issue-item .item-list-container ul li .pending {
+  color: red;
+}
+
+.issue-item .item-list-container ul li .recieved {
+  color: yellow;
+}
+
+.issue-item .item-list-container ul li .completed {
+  color: green;
 }
 
 .react-datepicker-wrapper,
