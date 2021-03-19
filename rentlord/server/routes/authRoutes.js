@@ -18,7 +18,7 @@ server.put('/api/picture', async (req, res) => {
   const { url } = req.body
   console.log('url', url)
   try {
-     await User.findOneAndUpdate({_id: req.user._id}, {picture: url})
+     await User.findOneAndUpdate({_id: req.user._id}, {picture: `https://res.cloudinary.com/drgfyozzd/image/upload/${url}`})
       .then(pic => {
         res.status(200).json(pic)
       })
@@ -80,16 +80,6 @@ server.put('/api/picture', async (req, res) => {
 
   })
 
-  //grabbing the tenant that is logged in
-  server.get('/api/tenant', async (req, res) => {
-    console.log(req.user.tenant)
-      User.findById(req.user._id)
-        .then(tenant => {
-          res.status(200).json(tenant)
-          console.log(tenant)
-        })
-
-  })
 
 // grabbing the tenant's landlord by their id
   server.get('/api/landlord', async (req, res) => {
@@ -131,6 +121,18 @@ server.put('/api/picture', async (req, res) => {
         })
 
   })
+
+    //grabbing the tenant that is logged in
+    server.get('/api/tenant', async (req, res) => {
+      console.log(req.user.tenant)
+        await User.findById(req.user._id)
+          .then(tenant => {
+            res.status(200).json(tenant)
+            console.log(tenant)
+          })
+  
+    })
+  
 
 
 // for Role component - updating the landlord scheme on tenant's record that is logged in

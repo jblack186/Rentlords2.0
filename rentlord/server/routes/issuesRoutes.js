@@ -61,9 +61,9 @@ module.exports = (server) => {
 
 
     server.put('/api/plumbing', async (req, res) => {
-        const { plumbing } = req.body;
+        const { plumbing, image } = req.body;
         console.log()
-        await Issues.findOneAndUpdate({_user: req.user._id}, {$push: {plumbing: {body: plumbing, pending: true, recieved: false, completed: false, dateSent: Date.now()}}})
+        await Issues.findOneAndUpdate({_user: req.user._id}, {$push: {plumbing: {body: plumbing, pending: true, recieved: false, completed: false, image: image, dateSent: Date.now()}}})
         try {
             res.status(202).json({body: plumbing, pending: true, recieved: false, completed: false})
         }
@@ -73,11 +73,12 @@ module.exports = (server) => {
     })
     
     server.put('/api/electrical', async (req, res) => {
-        const { electrical } = req.body;
+        const { electrical, image  } = req.body;
         // const theIssue = await Issues.
-        await Issues.findOneAndUpdate({_user: req.user._id}, {$push: {electrical: {body: electrical}}})
+        await Issues.findOneAndUpdate({_user: req.user._id}, {$push: {electrical: {body: electrical, image: image, dateSent: Date.now()}}})
         try {
             const electricals = new Elec({body: electrical, _userId: req.user._id, _userLandlordId: req.user.landlord})
+
             // electricals.save();
 
             res.status(202).json({body: 'electrical', pending: true, recieved: false, completed: false})
@@ -89,25 +90,27 @@ module.exports = (server) => {
     })
 
     server.put('/api/carpentry', async (req, res) => {
-        const { carpentry } = req.body;
+        const { carpentry, image  } = req.body;
         console.log()
-        await Issues.findOneAndUpdate({_user: req.user._id}, {$push: {carpentry: {body: carpentry}}})
+        await Issues.findOneAndUpdate({_user: req.user._id}, {$push: {carpentry: {body: carpentry, image: image, dateSent: Date.now()}}})
         try {
             res.status(202).json({body: carpentry, pending: true, recieved: false, completed: false})
+
         }
         catch(err) {
             console.log(err)
         }
 
     })
-    
     server.put('/api/complaints', async (req, res) => {
-        const { complaints } = req.body;
+        const { complaints, image  } = req.body;
         console.log()
-        await Issues.findOneAndUpdate({_user: req.user._id}, {$push: {complaints: {body: complaints}}})
+        await Issues.findOneAndUpdate({_user: req.user._id}, {$push: {complaints: {body: complaints, image: image, dateSent: Date.now()}}})
         
+
         try {
             res.status(202).json({body: complaints, pending: true, recieved: false, completed: false})
+            
         }
         catch(err) {
             console.log(err)

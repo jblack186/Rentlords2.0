@@ -22,6 +22,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import User from "./img/profile-user.svg";
 import Avatars from "@dicebear/avatars";
 import sprites from "@dicebear/avatars-identicon-sprites";
+import { Link } from "react-router-dom";
 
 const TDashboard = (props) => {
   console.log("props", props.tenant);
@@ -46,23 +47,28 @@ const TDashboard = (props) => {
   const [click, setClick] = useState(false);
 
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState(['', '']);
+  const [image, setImage] = useState(["", ""]);
   const [imageName, setImageName] = useState("");
   const [newPic, setNewPic] = useState(false);
   const [elPic, setElPic] = useState(false);
   const [plPic, setPlPic] = useState(false);
   const [caPic, setCaPic] = useState(false);
   const [coPic, setCoPic] = useState(false);
+  const [elDown, setElDown] = useState(false);
+
+  const openEl = () => {
+    setElDown(!elDown);
+  };
 
   let options = {};
   let avatars = new Avatars(sprites, options);
   let svg = avatars.create("custom-seed");
-console.log('image', image)
+  console.log("image", image);
   //cloudinary upload
   const uploadImage = async (e) => {
     const files = e.target.files;
     console.log(files[0].size);
-    if (files[0].size < 124000) {
+    if (files[0].size < 3000000000) {
       const data = new FormData();
       data.append("file", files[0]);
       data.append("upload_preset", "rentlords");
@@ -146,51 +152,65 @@ console.log('image', image)
     e.preventDefault();
     if (plumbing.length > 0) {
       axios
-        .put("/api/plumbing", { plumbing: plumbing })
+        .put("/api/plumbing", { plumbing: plumbing, image: image[0] })
         .then((response) => {
           setPlPic(false);
           setTempPlumbing([...tempPlumbing, plumbing]);
           setTempCount(tempCount + 1);
+          setImage(["", ""]);
         })
         .catch((error) => {});
       setPlumbing("");
+      setImage(["", ""]);
     }
   };
 
   const plPicture = () => {
     setPlPic(true);
-    setImage([image[0], 'plumbing'])
+    setElPic(false);
+    setCaPic(false);
+    setCoPic(false);
+
+    setImage([image[0], "plumbing"]);
   };
 
   const elPicture = () => {
+    setPlPic(false);
     setElPic(true);
-    setImage([image[0], 'electrical'])
-
+    setCaPic(false);
+    setCoPic(false);
+    setImage([image[0], "electrical"]);
   };
 
   const caPicture = () => {
+    setPlPic(false);
+    setElPic(false);
     setCaPic(true);
-    setImage([image[0], 'carpentry'])
-
+    setCoPic(false);
+    setImage([image[0], "carpentry"]);
   };
   const coPicture = () => {
+    setPlPic(false);
+    setElPic(false);
+    setCaPic(false);
     setCoPic(true);
-    setImage([image[0], 'complaints'])
-
+    setImage([image[0], "complaints"]);
   };
 
   const electricalIssue = (e) => {
     e.preventDefault();
     if (electrical.length > 0) {
       axios
-        .put("/api/electrical", { electrical: electrical })
+        .put("/api/electrical", { electrical: electrical, image: image[0] })
         .then((response) => {
           setElPic(false);
-          setTempElectrical([...tempElectrical, electrical]);
+          setTempElectrical([...tempElectrical, {body: electrical, date: Date.now(), status: 'Pending'}]);
           setTempCount(tempCount + 1);
+          setImage(["", ""]);
         })
         .catch((error) => {});
       setElectrical("");
+      setImage(["", ""]);
     }
   };
 
@@ -198,28 +218,32 @@ console.log('image', image)
     e.preventDefault();
     if (carpentry.length > 0) {
       axios
-        .put("/api/carpentry", { carpentry: carpentry })
+        .put("/api/carpentry", { carpentry: carpentry, image: image[0] })
         .then((response) => {
           setCaPic(false);
           setTempCarpentry([...tempCarpentry, carpentry]);
           setTempCount(tempCount + 1);
+          setImage(["", ""]);
         })
         .catch((error) => {});
       setCarpentry("");
+      setImage(["", ""]);
     }
   };
   const complaintsIssue = (e) => {
     e.preventDefault();
     if (complaints.length > 0) {
       axios
-        .put("/api/complaints", { complaints: complaints })
+        .put("/api/complaints", { complaints: complaints, image: image[0] })
         .then((response) => {
           setCoPic(false);
           setTempComplaints([...tempComplaints, complaints]);
           setTempCount(tempCount + 1);
+          setImage(["", ""]);
         })
         .catch((error) => {});
       setComplaints("");
+      setImage(["", ""]);
     }
   };
 
@@ -252,6 +276,8 @@ console.log('image', image)
     e.preventDefault();
     window.scrollTo(0, document.body.scrollHeight);
   };
+  console.log("yo", props.landlord);
+  console.log("no", tempElectrical);
 
   return (
     <section className="tdashboard-contain">
@@ -264,7 +290,7 @@ console.log('image', image)
 
       <section className="tdashboard-content">
         <h2>
-          Hi {props.username}, <span>Welcome back</span>
+          Hi {props.tenant.username}, <span>Welcome back</span>
         </h2>
         <div className="middle-content">
           <div className="issues electrical">
@@ -279,7 +305,9 @@ console.log('image', image)
               ) : null}
 
               <div className={!elPic ? "plus-box" : "plus-box-open"}>
-                {image[0].length > 0 && image[1] === 'electrical' ? <img className='box-pic' src={image[0]} alt='your-pic' /> : null}
+                {image[0].length > 0 && image[1] === "electrical" ? (
+                  <img className="box-pic" src={image[0]} alt="your-pic" />
+                ) : null}
                 {!elPic ? (
                   <p onClick={elPicture}>
                     {" "}
@@ -309,7 +337,9 @@ console.log('image', image)
                 <p className="anyPics">Any Pictures?</p>
               ) : null}
               <div className={!plPic ? "plus-box" : "plus-box-open"}>
-              {image[0].length > 0 && image[1] === 'plumbing' ? <img className='box-pic' src={image[0]} alt='your-pic' /> : null}
+                {image[0].length > 0 && image[1] === "plumbing" ? (
+                  <img className="box-pic" src={image[0]} alt="your-pic" />
+                ) : null}
                 {!plPic ? (
                   <p onClick={plPicture}>
                     {" "}
@@ -339,12 +369,24 @@ console.log('image', image)
               {carpentry.length > 0 ? (
                 <p className="anyPics">Any Pictures?</p>
               ) : null}
-<div className={!caPic ? "plus-box" : "plus-box-open"}>
-{image[0].length > 0 && image[1] === 'carpentry' ? <img className='box-pic' src={image[0]} alt='your-pic' /> : null}
-                {!caPic ? <p onClick={caPicture}>
-                  {" "}
-                  <FontAwesomeIcon className="camera" icon={faCamera} />
-                </p> : <input name="file" type="file" onChange={uploadImage} className="file" placeholder='Upload an image' />}
+              <div className={!caPic ? "plus-box" : "plus-box-open"}>
+                {image[0].length > 0 && image[1] === "carpentry" ? (
+                  <img className="box-pic" src={image[0]} alt="your-pic" />
+                ) : null}
+                {!caPic ? (
+                  <p onClick={caPicture}>
+                    {" "}
+                    <FontAwesomeIcon className="camera" icon={faCamera} />
+                  </p>
+                ) : (
+                  <input
+                    name="file"
+                    type="file"
+                    onChange={uploadImage}
+                    className="file"
+                    placeholder="Upload an image"
+                  />
+                )}
               </div>
               <button type="submit">
                 <FontAwesomeIcon className="plane" icon={faPaperPlane} />
@@ -361,12 +403,24 @@ console.log('image', image)
               {complaints.length > 0 ? (
                 <p className="anyPics">Any Pictures?</p>
               ) : null}
-<div className={!coPic ? "plus-box" : "plus-box-open"}>
-{image[0].length > 0 && image[1] === 'complaints' ? <img className='box-pic' src={image[0]} alt='your-pic' /> : null}
-                {!coPic ? <p onClick={coPicture}>
-                  {" "}
-                  <FontAwesomeIcon className="camera" icon={faCamera} />
-                </p> : <input name="file" type="file" onChange={uploadImage} className="file" placeholder='Upload an image' />}
+              <div className={!coPic ? "plus-box" : "plus-box-open"}>
+                {image[0].length > 0 && image[1] === "complaints" ? (
+                  <img className="box-pic" src={image[0]} alt="your-pic" />
+                ) : null}
+                {!coPic ? (
+                  <p onClick={coPicture}>
+                    {" "}
+                    <FontAwesomeIcon className="camera" icon={faCamera} />
+                  </p>
+                ) : (
+                  <input
+                    name="file"
+                    type="file"
+                    onChange={uploadImage}
+                    className="file"
+                    placeholder="Upload an image"
+                  />
+                )}
               </div>
               <button type="submit">
                 <FontAwesomeIcon className="plane" icon={faPaperPlane} />
@@ -377,14 +431,23 @@ console.log('image', image)
       </section>
       <section className="notifications">
         <div className="top-notifications">
-          <img
-            className="user-pic"
-            src="https://avatars.dicebear.com/api/identicon/:seed.svg?colors=blue"
-          />
-          <p>Jamison Blackwell</p>
+          <Link to="/settings">
+            <div className="user-pic-holder">
+              {props.tenant && props.tenant.picture.length > 0 ? (
+                <img src={props.tenant.picture} alt="your-avatar" />
+              ) : (
+                <img
+                  className="user-pic"
+                  src="https://avatars.dicebear.com/api/identicon/:seed.svg?colors=blue"
+                />
+              )}
+              <FontAwesomeIcon className="camera-pic" icon={faCamera} />
+            </div>
+          </Link>
+          <p>{props.tenant.wholeName}</p>
         </div>
         <div className="bottom-notifications">
-          <h4>Issues</h4>
+          {elDown === false ? <h4>Issues</h4> : null}
           <div className="issue-content">
             <ul>
               <li>Electrical</li>
@@ -394,9 +457,60 @@ console.log('image', image)
                     ? issues.electrical.length + tempElectrical.length
                     : 0}
                 </p>
-                <FontAwesomeIcon className="arrowDown" icon={faChevronDown} />
+                <FontAwesomeIcon
+                  onClick={openEl}
+                  className="arrowDown"
+                  icon={faChevronDown}
+                />
               </div>
             </ul>
+
+            { elDown ? 
+              <div className="issue-item">
+                            { tempElectrical ? 
+              <div className='temp-items'>
+                {issues
+                  ? tempElectrical.map((item) => {
+                      return (
+                        <div>
+                          <ul>
+                            <li>
+                              {item.status}
+                            </li>
+                            <li>{item.body}</li>
+                            <li>{item.date}</li>
+                          </ul>
+                        </div>
+                      );
+                    })
+                  : null}
+                  
+              </div>
+           : null }
+                {issues
+                  ? issues.electrical.map((item) => {
+                      return (
+                        <div>
+                          <ul>
+                            <li>
+                              {item.pending === true
+                                ? "Pending"
+                                : item.recieved === true
+                                ? "Recieved"
+                                : item.completed === true
+                                ? "Completed"
+                                : null}
+                            </li>
+                            <li>{item.body}</li>
+                            <li>{item.date}</li>
+                          </ul>
+                        </div>
+                      );
+                    })
+                  : null}
+                  
+              </div>
+           : null }
           </div>
           <div className="issue-content">
             <ul>

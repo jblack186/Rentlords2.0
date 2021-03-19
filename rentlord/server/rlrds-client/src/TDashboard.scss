@@ -196,7 +196,7 @@ nav.nav-dash {
         align-self: flex-end;
 
         .box-pic {
-          width: 50px;
+          width: 60px;
         }
 
       }
@@ -229,8 +229,24 @@ nav.nav-dash {
       justify-content: space-between;
       height: 10%;
       border-bottom: 1px solid $secondaryColor;
+
+    .user-pic-holder {
+      position: relative;
+      cursor: pointer;
+
+      .camera-pic {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        color: $thirdColor;
+      }
+    }
+      
     img {
-      width: 35px;
+      width: 61px;
+      height: 61px;
+      border-radius: 70px;
+      object-fit: cover;
     }
 
     p {
@@ -257,8 +273,8 @@ nav.nav-dash {
     .issue-content {
       width: 100%;
       display: flex;
+      flex-direction: column;
       border-bottom: 1px solid $thirdColor;
-
 
       ul {
         padding: 0;
@@ -283,6 +299,7 @@ nav.nav-dash {
         }
       }
     }
+
     }
   }
 }
@@ -290,6 +307,18 @@ nav.nav-dash {
 
 }
 
+.issue-item {
+  height: 300px; 
+  overflow-x: hidden; 
+  overflow-y: auto; 
+  text-align:justify;
+
+  .temp-items {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+}
 
 
 .react-datepicker-wrapper,

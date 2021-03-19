@@ -14,11 +14,23 @@ import './TDashboard.css';
 const App = e => {
     const [landlord, setLandlord] = useState('');
     const [issues, setIssues] = useState([]);
-    const [tenant, setTenant] = useState();
+    const [tenant, setTenant] = useState('');
  
-console.log(landlord)
+console.log('landlord',landlord)
+console.log('tenant',tenant)
   useEffect(() => {
+    axios.get('/api/tenants-issues')
+        .then(res => {
+            setIssues(res.data)
+            console.log('response', res)
+            
+        })
 
+        axios.get('/api/tenant')
+        .then(res => {
+            setTenant(res.data)
+        })
+    
     axios.get('/api/landlord-info')
 
         .then(res => {
@@ -26,19 +38,9 @@ console.log(landlord)
         })
         .catch(err => {
         })
-    axios.get('/api/tenants-issues')
-        .then(res => {
-            setIssues(res.data)
-            console.log('response', res)
-            
-        })
         .catch(err => {
             console.log('err', err)
 
-        })
-    axios.get('/api/tenant')
-        .then(res => {
-            setTenant(res.data)
         })
 
 
@@ -114,7 +116,7 @@ const changeSituation = e => {
   return (
     <div>
             <Route exact path='/login' render= {(props) => { return <Login  {...props}  />}} />
-            <Route exact path='/tenant-dashboard' render= {(props) => { return <TDashboard tenant={tenant} {...props}  />}} />
+            <Route exact path='/tenant-dashboard' render= {(props) => { return <TDashboard tenant={tenant} landlord={landlord}  {...props}  />}} />
             <Route exact path='/landlord-dashboard' render= {(props) => { return <LDashboard changeSituation={changeSituation} changeCompleted={changeCompleted} changeRecieved={changeRecieved} landlord={landlord} issues={issues} {...props}  />}} />
             <Route exact path='/role' render= {(props) => { return <Role  {...props}  />}} />
             <Route exact path='/landlord-pick' render= {(props) => { return <LandlordPick  {...props}  />}} />
