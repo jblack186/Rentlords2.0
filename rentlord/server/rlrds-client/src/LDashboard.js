@@ -28,7 +28,7 @@ const LDashboard = (props) => {
   let avatars = new Avatars(sprites, options);
   let svg = avatars.create("custom-seed");
 
-  console.log('props', props)
+  console.log('props', props.landlord.username)
 
   return (
     <section className="ldashboard-contain">

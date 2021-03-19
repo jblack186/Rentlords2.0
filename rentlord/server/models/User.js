@@ -9,9 +9,7 @@ const userSchema = new Schema({
     landlord: String,
     tenant: Array,
     address: String,
-    picture: {
-        type: String
-    }
+    picture: String
 });
 
 const User = mongoose.model('user', userSchema);
