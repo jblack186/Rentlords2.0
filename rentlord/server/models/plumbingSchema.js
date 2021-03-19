@@ -7,7 +7,7 @@ const plumbingSchema = new Schema({
     recieved: {type: Boolean, default: false},
     completed: {type: Boolean, default: false},
     image: {type: String, default: ''},
-    date: {type: String, default: Date.now()}
+    date: {type: String, default:  new Date().toDateString()}
 
 })
 

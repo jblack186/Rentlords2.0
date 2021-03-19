@@ -55,10 +55,39 @@ const TDashboard = (props) => {
   const [caPic, setCaPic] = useState(false);
   const [coPic, setCoPic] = useState(false);
   const [elDown, setElDown] = useState(false);
+  const [plDown, setPlDown] = useState(false);
+  const [caDown, setCaDown] = useState(false);
+  const [coDown, setCoDown] = useState(false);
 
   const openEl = () => {
+    setPlDown(false);
     setElDown(!elDown);
+    setCaDown(false);
+    setCoDown(false);
   };
+
+  const openPl = () => {
+    setPlDown(!plDown);
+    setElDown(false);
+    setCaDown(false);
+    setCoDown(false);
+
+  };
+
+  const openCa = () => {
+    setPlDown(false);
+    setElDown(false);
+    setCaDown(!caDown);
+    setCoDown(false);
+  };
+
+  const openCo = () => {
+    setPlDown(false);
+    setElDown(false);
+    setCaDown(false);
+    setCoDown(!coDown);
+  };
+
 
   let options = {};
   let avatars = new Avatars(sprites, options);
@@ -148,22 +177,6 @@ const TDashboard = (props) => {
       .catch((err) => {});
   }, []);
 
-  const plumbingIssue = (e) => {
-    e.preventDefault();
-    if (plumbing.length > 0) {
-      axios
-        .put("/api/plumbing", { plumbing: plumbing, image: image[0] })
-        .then((response) => {
-          setPlPic(false);
-          setTempPlumbing([...tempPlumbing, plumbing]);
-          setTempCount(tempCount + 1);
-          setImage(["", ""]);
-        })
-        .catch((error) => {});
-      setPlumbing("");
-      setImage(["", ""]);
-    }
-  };
 
   const plPicture = () => {
     setPlPic(true);
@@ -197,6 +210,24 @@ const TDashboard = (props) => {
     setImage([image[0], "complaints"]);
   };
 
+  const plumbingIssue = (e) => {
+    e.preventDefault();
+    if (plumbing.length > 0) {
+      axios
+        .put("/api/plumbing", { plumbing: plumbing, image: image[0] })
+        .then((response) => {
+          setPlPic(false);
+          setTempPlumbing([...tempPlumbing, {body: plumbing, date: new Date().toDateString(), status: 'Pending'}]);
+          setTempCount(tempCount + 1);
+          setImage(["", ""]);
+        })
+        .catch((error) => {});
+      setPlumbing("");
+      setImage(["", ""]);
+    }
+  };
+
+
   const electricalIssue = (e) => {
     e.preventDefault();
     if (electrical.length > 0) {
@@ -204,7 +235,7 @@ const TDashboard = (props) => {
         .put("/api/electrical", { electrical: electrical, image: image[0] })
         .then((response) => {
           setElPic(false);
-          setTempElectrical([...tempElectrical, {body: electrical, date: Date.now(), status: 'Pending'}]);
+          setTempElectrical([...tempElectrical, {body: electrical, date: new Date().toDateString(), status: 'Pending'}]);
           setTempCount(tempCount + 1);
           setImage(["", ""]);
         })
@@ -221,7 +252,7 @@ const TDashboard = (props) => {
         .put("/api/carpentry", { carpentry: carpentry, image: image[0] })
         .then((response) => {
           setCaPic(false);
-          setTempCarpentry([...tempCarpentry, carpentry]);
+          setTempCarpentry([...tempCarpentry, {body: carpentry, date: new Date().toDateString(), status: 'Pending'}]);
           setTempCount(tempCount + 1);
           setImage(["", ""]);
         })
@@ -237,7 +268,7 @@ const TDashboard = (props) => {
         .put("/api/complaints", { complaints: complaints, image: image[0] })
         .then((response) => {
           setCoPic(false);
-          setTempComplaints([...tempComplaints, complaints]);
+          setTempComplaints([...tempComplaints, {body: complaints, date: new Date().toDateString(), status: 'Pending'}]);
           setTempCount(tempCount + 1);
           setImage(["", ""]);
         })
@@ -276,8 +307,7 @@ const TDashboard = (props) => {
     e.preventDefault();
     window.scrollTo(0, document.body.scrollHeight);
   };
-  console.log("yo", props.landlord);
-  console.log("no", tempElectrical);
+  console.log("yo", tempPlumbing, tempComplaints);
 
   return (
     <section className="tdashboard-contain">
@@ -447,12 +477,12 @@ const TDashboard = (props) => {
           <p>{props.tenant.wholeName}</p>
         </div>
         <div className="bottom-notifications">
-          {elDown === false ? <h4>Issues</h4> : null}
+          {(elDown === false && plDown === false && caDown === false && coDown === false) ? <h4>Issues</h4> : null}
           <div className="issue-content">
             <ul>
               <li>Electrical</li>
               <div className="issue-menu">
-                <p>
+                <p className='list-count'>
                   {issues.electrical
                     ? issues.electrical.length + tempElectrical.length
                     : 0}
@@ -472,13 +502,13 @@ const TDashboard = (props) => {
                 {issues
                   ? tempElectrical.map((item) => {
                       return (
-                        <div>
+                        <div className='item-list-container'>
                           <ul>
-                            <li>
-                              {item.status}
+                            <li className='status'>
+                              <p className='pending'>{item.status}</p>
                             </li>
-                            <li>{item.body}</li>
-                            <li>{item.date}</li>
+                            <li className='body'>{item.body}</li>
+                            <li className='item-date'>{item.date}</li>
                           </ul>
                         </div>
                       );
@@ -487,28 +517,29 @@ const TDashboard = (props) => {
                   
               </div>
            : null }
+            <div className='item-reverse'>
                 {issues
                   ? issues.electrical.map((item) => {
                       return (
-                        <div>
+                        <div className='item-list-container'>
                           <ul>
-                            <li>
+                            <li className='status'>
                               {item.pending === true
-                                ? "Pending"
+                                ? <p className='pending'>Pending</p>
                                 : item.recieved === true
-                                ? "Recieved"
+                                ? <p className='recieved'>Recieved</p>
                                 : item.completed === true
-                                ? "Completed"
+                                ? <p className='completed'>Completed</p>
                                 : null}
                             </li>
-                            <li>{item.body}</li>
-                            <li>{item.date}</li>
+                            <li  className='body'>{item.body}</li>
+                            <li className='item-date'>{item.date}</li>
                           </ul>
                         </div>
                       );
                     })
                   : null}
-                  
+                 </div> 
               </div>
            : null }
           </div>
@@ -516,43 +547,201 @@ const TDashboard = (props) => {
             <ul>
               <li>Plumbing</li>
               <div className="issue-menu">
-                <p>
+                <p className='list-count'>
                   {issues.plumbing
                     ? issues.plumbing.length + tempPlumbing.length
                     : 0}
                 </p>
-                <FontAwesomeIcon className="arrowDown" icon={faChevronDown} />
+                <FontAwesomeIcon
+                  onClick={openPl}
+                  className="arrowDown"
+                  icon={faChevronDown}
+                />
               </div>
             </ul>
+
+            { plDown ? 
+              <div className="issue-item">
+                            { tempPlumbing ? 
+              <div className='temp-items'>
+                {issues
+                  ? tempPlumbing.map((item) => {
+                      return (
+                        <div className='item-list-container'>
+                          <ul>
+                            <li className='status'>
+                              <p className='pending'>{item.status}</p>
+                            </li>
+                            <li className='body'>{item.body}</li>
+                            <li className='item-date'>{item.date}</li>
+                          </ul>
+                        </div>
+                      );
+                    })
+                  : null}
+                  
+              </div>
+           : null }
+                       <div className='item-reverse'>
+
+                {issues
+                  ? issues.plumbing.map((item) => {
+                      return (
+                        <div className='item-list-container'>
+                          <ul>
+                            <li className='status'>
+                              {item.pending === true
+                                ? <p className='pending'>Pending</p>
+                                : item.recieved === true
+                                ? <p className='recieved'>Recieved</p>
+                                : item.completed === true
+                                ? <p className='completed'>Completed</p>
+                                : null}
+                            </li>
+                            <li  className='body'>{item.body}</li>
+                            <li className='item-date'>{item.date}</li>
+                          </ul>
+                        </div>
+                      );
+                    })
+                  : null}
+                   </div>
+              </div>
+           : null }
+          
           </div>
 
           <div className="issue-content">
             <ul>
               <li>Carpentry</li>
               <div className="issue-menu">
-                <p>
+                <p className='list-count'>
                   {issues.carpentry
                     ? issues.carpentry.length + tempCarpentry.length
                     : 0}
                 </p>
-
-                <FontAwesomeIcon className="arrowDown" icon={faChevronDown} />
+                <FontAwesomeIcon
+                  onClick={openCa}
+                  className="arrowDown"
+                  icon={faChevronDown}
+                />
               </div>
             </ul>
+
+            { caDown ? 
+              <div className="issue-item">
+                            { tempCarpentry ? 
+              <div className='temp-items'>
+                {issues
+                  ? tempCarpentry.map((item) => {
+                      return (
+                        <div className='item-list-container'>
+                          <ul>
+                            <li className='status'>
+                              <p className='pending'>{item.status}</p>
+                            </li>
+                            <li className='body'>{item.body}</li>
+                            <li className='item-date'>{item.date}</li>
+                          </ul>
+                        </div>
+                      );
+                    })
+                  : null}
+                  
+              </div>
+           : null }
+                                  <div className='item-reverse'>
+
+                {issues
+                  ? issues.carpentry.map((item) => {
+                      return (
+                        <div className='item-list-container'>
+                          <ul>
+                            <li className='status'>
+                              {item.pending === true
+                                ? <p className='pending'>Pending</p>
+                                : item.recieved === true
+                                ? <p className='recieved'>Recieved</p>
+                                : item.completed === true
+                                ? <p className='completed'>Completed</p>
+                                : null}
+                            </li>
+                            <li  className='body'>{item.body}</li>
+                            <li className='item-date'>{item.date}</li>
+                          </ul>
+                        </div>
+                      );
+                    })
+                  : null}
+                  </div>
+              </div>
+           : null }
           </div>
           <div className="issue-content">
             <ul>
               <li>Complaints</li>
               <div className="issue-menu">
-                <p>
+                <p className='list-count'>
                   {issues.complaints
                     ? issues.complaints.length + tempComplaints.length
                     : 0}
                 </p>
-
-                <FontAwesomeIcon className="arrowDown" icon={faChevronDown} />
+                <FontAwesomeIcon
+                  onClick={openCo}
+                  className="arrowDown"
+                  icon={faChevronDown}
+                />
               </div>
             </ul>
+
+            { coDown ? 
+              <div className="issue-item">
+                            { tempComplaints ? 
+              <div className='temp-items'>
+                {issues
+                  ? tempComplaints.map((item) => {
+                      return (
+                        <div className='item-list-container'>
+                          <ul>
+                            <li className='status'>
+                              <p className='pending'>{item.status}</p>
+                            </li>
+                            <li className='body'>{item.body}</li>
+                            <li className='item-date'>{item.date}</li>
+                          </ul>
+                        </div>
+                      );
+                    })
+                  : null}
+                  
+              </div>
+           : null }
+                                  <div className='item-reverse'>
+
+                {issues
+                  ? issues.complaints.map((item) => {
+                      return (
+                        <div className='item-list-container'>
+                          <ul>
+                            <li className='status'>
+                              {item.pending === true
+                                ? <p className='pending'>Pending</p>
+                                : item.recieved === true
+                                ? <p className='recieved'>Recieved</p>
+                                : item.completed === true
+                                ? <p className='completed'>Completed</p>
+                                : null}
+                            </li>
+                            <li  className='body'>{item.body}</li>
+                            <li className='item-date'>{item.date}</li>
+                          </ul>
+                        </div>
+                      );
+                    })
+                  : null}
+                  </div>
+              </div>
+           : null }
           </div>
         </div>
       </section>

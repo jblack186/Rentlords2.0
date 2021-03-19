@@ -119,6 +119,7 @@ nav.nav-dash {
 
 
       h3 {
+        align-self: flex-start;
         color: $primaryColor;
         width: 25%;
       }
@@ -282,6 +283,7 @@ nav.nav-dash {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      
 
       width: 100%;
 
@@ -293,6 +295,10 @@ nav.nav-dash {
         display: flex;
         align-items: center;
         justify-content: space-around;
+
+        .list-count {
+          font-weight: bold;
+        }
 
         .arrowDown {
           cursor: pointer;
@@ -316,6 +322,52 @@ nav.nav-dash {
   .temp-items {
     display: flex;
     flex-direction: column-reverse;
+  }
+
+  .item-reverse {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .item-list-container {
+    margin-bottom: 10px;
+    border-bottom: 1px solid lightgray;
+    ul {
+      display: flex;
+      flex-direction: column;
+
+      li.status {
+        align-self: flex-start;
+        font-weight: bold;
+
+      }
+
+      li.body {
+        line-height: 25px;
+        font-size: .9rem;
+      }
+
+      li.item-date {
+        align-self: flex-end;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        font-size: .9rem;
+
+      }
+
+      li .pending {
+        color: red;
+      }
+
+      li .recieved {
+        color: yellow;
+      }
+      li .completed {
+        color: green;
+      }
+
+    }
+    
   }
 
 }
