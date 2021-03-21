@@ -1,16 +1,18 @@
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
+const electricalSchema = require('../models/electricalSchema');
+const plumbingSchema = require('../models/plumbingSchema');
+const complaintSchema = require('../models/complaintsSchema');
+const carpentrySchema = require('../models/carpentrySchema');
 
 const { Schema } = mongoose;
-
+const Database = mongoose.model('issues', 'electrical', 'plumbing', 'carpentry')
 const Issues = mongoose.model('issues')
-const electrical = mongoose.model('electrical')
-const Users = mongoose.model('user')
-const plumbingSchema = require('../models/plumbingSchema');
-const carpentrySchema = require('../models/carpentrySchema');
-const electricalSchema = require('../models/electricalSchema');
-const complaintsSchema = require('../models/complaintsSchema');
-const Elec = mongoose.model('electrical', electricalSchema);
+const Electric = mongoose.model('electrical', electricalSchema)
+const Plumbing = mongoose.model('plumbing', plumbingSchema)
+const Complaints = mongoose.model('complaints', complaintSchema)
+const Carpentry = mongoose.model('carpentry', carpentrySchema)
+
 
 module.exports = (server) => {
 
@@ -20,6 +22,7 @@ module.exports = (server) => {
         const { fromTenantMessage, toTenantMessage, _userLandlord } = req.body;
         
         console.log('usas',req.user)
+
 
         const issues = new Issues({
             pics: '',    
@@ -39,7 +42,6 @@ module.exports = (server) => {
             //This line saves the issues record to the database
 
             await issues.save();
-            await electricalSchema.save();
 
           }
         catch(err) {
@@ -50,9 +52,13 @@ module.exports = (server) => {
 
     server.get('/api/tenant-issues', async (req, res) => {
         try {
-            const issue = await Issues.findOne({_user: req.user._id})
-            console.log('first-iss',issue)
-            res.status(200).json({ messages: issue.fromTenantMessage, plumbing: issue.plumbing, electrical: issue.electrical, carpentry: issue.carpentry, complaints: issue.complaints, pics: issue.picture})
+            const electricIssues = await Electric.find({_user: req.user._id})
+            const plumbingIssues = await Plumbing.find({_user: req.user._id})
+            const carpentryIssues = await Carpentry.find({_user: req.user._id})
+            const complaintsIssues = await Complaints.find({_user: req.user._id})
+
+            res.status(200).json([electricIssues, plumbingIssues, carpentryIssues, complaintsIssues])
+            console.log('issue', plumbingSchema)
         }
         catch(err) {
             console.log(err)
@@ -60,77 +66,112 @@ module.exports = (server) => {
     })
 
 
-    server.put('/api/plumbing', async (req, res) => {
-        const { plumbing, image } = req.body;
-        console.log()
-        await Issues.findOneAndUpdate({_user: req.user._id}, {$push: {plumbing: {body: plumbing, pending: true, recieved: false, completed: false, image: image, dateSent: Date.now()}}})
+    server.post('/api/plumbing', async (req, res) => {
+        const { plumbing, image  } = req.body;
+        const plumbingSchema = new Plumbing({
+            body : plumbing,
+            pending : true,
+            recieved: false,
+            completed: false,
+            image: image,
+            date: new Date().toDateString(),
+            name: req.user.wholeName,
+            address: req.user.address,
+            category: 'plumbing',
+            landlord: req.user.landlord,
+            _user: req.user._id
+        })
         try {
             res.status(202).json({body: plumbing, pending: true, recieved: false, completed: false})
+            await plumbingSchema.save();
+
         }
         catch(err) {
             console.log(err)
         }
     })
+
     
-    server.put('/api/electrical', async (req, res) => {
+    server.post('/api/electrical', async (req, res) => {
         const { electrical, image  } = req.body;
-        // const theIssue = await Issues.
-        await Issues.findOneAndUpdate({_user: req.user._id}, {$push: {electrical: {body: electrical, image: image, dateSent: Date.now()}}})
+        const electricalSchema = new Electric({
+            _user: req.user.id,
+            body : electrical,
+            pending : true,
+            recieved: false,
+            completed: false,
+            image: image,
+            date: new Date().toDateString(),
+            name: req.user.wholeName,
+            address: req.user.address,
+            category: 'electrical',
+            landlord: req.user.landlord
+               
+        })
         try {
-            const electricals = new Elec({body: electrical, _userId: req.user._id, _userLandlordId: req.user.landlord})
+            res.status(202).json({body: electrical, pending: true, recieved: false, completed: false})
+            await electricalSchema.save();
 
-            // electricals.save();
-
-            res.status(202).json({body: 'electrical', pending: true, recieved: false, completed: false})
         }
         catch(err) {
             console.log(err)
         }
-
     })
 
-    server.put('/api/carpentry', async (req, res) => {
+
+    
+
+    server.post('/api/carpentry', async (req, res) => {
         const { carpentry, image  } = req.body;
-        console.log()
-        await Issues.findOneAndUpdate({_user: req.user._id}, {$push: {carpentry: {body: carpentry, image: image, dateSent: Date.now()}}})
+        const carpentrySchema = new Carpentry({
+            body : carpentry,
+            pending : true,
+            recieved: false,
+            completed: false,
+            image: image,
+            date: new Date().toDateString(),
+            name: req.user.wholeName,
+            address: req.user.address,
+            category: 'carpentry',
+            landlord: req.user.landlord,
+            _user: req.user._id
+   
+        })
         try {
             res.status(202).json({body: carpentry, pending: true, recieved: false, completed: false})
+            await carpentrySchema.save();
 
         }
         catch(err) {
             console.log(err)
         }
-
     })
-    server.put('/api/complaints', async (req, res) => {
+    server.post('/api/complaints', async (req, res) => {
         const { complaints, image  } = req.body;
-        console.log()
-        await Issues.findOneAndUpdate({_user: req.user._id}, {$push: {complaints: {body: complaints, image: image, dateSent: Date.now()}}})
-        
-
+        const complaintSchema = new Complaints({
+            body : complaints,
+            pending : true,
+            recieved: false,
+            completed: false,
+            image: image,
+            date: new Date().toDateString(),
+            name: req.user.wholeName,
+            address: req.user.address,
+            category: 'complaints',
+            landlord: req.user.landlord,
+            _user: req.user._id
+  
+        })
         try {
             res.status(202).json({body: complaints, pending: true, recieved: false, completed: false})
-            
+            await complaintSchema.save();
+
         }
         catch(err) {
             console.log(err)
         }
-
     })
     
-    server.put('/api/fromTenantMessage', async (req, res) => {
-        try {
-            const { message } = req.body;
-            console.log(req.user)
-            await Issues.findOneAndUpdate({_user: req.user._id}, {$push: {fromTenantMessage: `Tenant ${message}`}})
-            await Issues.findOneAndUpdate({_user: req.user._id}, {$set: {pics: req.user.picture}})
-            res.status(202).json(message)
-        }
-        catch(err) {
-            console.log(err)
-        }
-    })
-
     server.put('/api/pending', async (req, res) => {
         const {ids, _user, situation} = await req.body;
         try {
@@ -177,9 +218,14 @@ module.exports = (server) => {
     server.get('/api/tenants-issues', async (req, res) => {
         try {
             //grabbing the issues assigned t landlord
-            const issues = await Issues.find({_userLandlord: req.user._id})
+            const electricity = await Electric.find({landlord: req.user._id})
+            const plumbing = await Plumbing.find({landlord: req.user._id})
+            const carpentry = await Carpentry.find({landlord: req.user._id})
+            const complaint = await Complaints.find({landlord: req.user._id})
+            let arr = electricity.concat(plumbing).concat(carpentry).concat(complaint)
             //kindly sending it to lanlord
-            res.status(200).json(issues)
+            
+            res.status(200).json(arr)
     }
         catch(err) {
             console.log(err)
@@ -187,48 +233,10 @@ module.exports = (server) => {
     })
 
 
-    server.get('/api/fromTenantMessages', async (req, res) => {
-        try {
-            const issue = await Issues.find({_userLandlord: req.user._id})
-            var keys = await Object.keys(issue);
-            var filtered = await keys.filter(function(key) {
-                return issue[key]
-            });
-                        // const mess = await issue.find(item => {
-            //     return item.fromTenantMessage === item.fromTenantMessage
-            // })
-            res.status(200).json(issue)
-            console.log('iss', keys)
-            console.log('ish', filtered)
-        } catch(err) {
-            console.log(err)
-        }
-    })
-
-    server.post('/api/toTenantMessages', async (req, res) => {
-        const {message, id} = req.body;
-        try {
-            Issues.findOneAndUpdate({_user: id})
-        } catch(err) {
-            console.log(err)
-        }
-    })
-    server.put('/api/toTenantMessage', async (req, res) => {
-        try {
-            const { message, id } = req.body;
-            console.log()
-            await Issues.findOneAndUpdate({_user: id}, {$push: {fromTenantMessage: `You: ${message}`}})    
-            res.status(202).json(message)
-        }
-        catch(err) {
-            console.log(err)
-        }
-    })
 
 
 };
 
 
 
-            // recipients: recipients.split(',').map(id => ({ id: id.trim() })),
 
