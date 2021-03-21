@@ -1,5 +1,5 @@
 h2 {
-  font-size: 3rem;
+  font-size: 4rem;
 }
 
 h4 {
@@ -82,6 +82,7 @@ p {
 
 .register-contain .login-content .login-content-left .header-info .header-text h2 {
   width: 70%;
+  font-size: 3.1rem;
   margin-bottom: 50px;
 }
 

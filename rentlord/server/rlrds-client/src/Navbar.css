@@ -97,4 +97,9 @@
 .navbar-contain ul .list-icon:hover .icon-item.first {
   border-top-right-radius: 50px;
 }
+
+.navbar-contain a {
+  list-style: none;
+  text-decoration: none;
+}
 /*# sourceMappingURL=Navbar.css.map */

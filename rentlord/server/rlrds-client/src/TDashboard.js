@@ -25,7 +25,6 @@ import sprites from "@dicebear/avatars-identicon-sprites";
 import { Link } from "react-router-dom";
 
 const TDashboard = (props) => {
-  console.log("props", props.tenant);
   const [startDate, setStartDate] = useState(new Date());
 
   const [landlord, setLandlord] = useState("");
@@ -58,6 +57,7 @@ const TDashboard = (props) => {
   const [plDown, setPlDown] = useState(false);
   const [caDown, setCaDown] = useState(false);
   const [coDown, setCoDown] = useState(false);
+  const [allIssues, setAllIssues] = useState([])
 
   const openEl = () => {
     setPlDown(false);
@@ -92,11 +92,9 @@ const TDashboard = (props) => {
   let options = {};
   let avatars = new Avatars(sprites, options);
   let svg = avatars.create("custom-seed");
-  console.log("image", image);
   //cloudinary upload
   const uploadImage = async (e) => {
     const files = e.target.files;
-    console.log(files[0].size);
     if (files[0].size < 3000000000) {
       const data = new FormData();
       data.append("file", files[0]);
@@ -160,7 +158,7 @@ const TDashboard = (props) => {
     setFromTenantMessage(e.target.value);
   };
 
-  useEffect(() => {
+  useEffect(async() => {
     axios
       .get("/api/landlord")
       .then((res) => {
@@ -168,15 +166,18 @@ const TDashboard = (props) => {
       })
       .catch((err) => {});
 
-    axios
+    await axios
       .get("/api/tenant-issues")
       .then((res) => {
-        setIssues(res.data);
-        console.log(res);
+        // setIssues(res.data);
+        console.log('res', res)
+        setAllIssues([res.data[0], res.data[1], res.data[2], res.data[3]])
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err)
+      });
   }, []);
-
+console.log('All',allIssues[0])
 
   const plPicture = () => {
     setPlPic(true);
@@ -214,7 +215,7 @@ const TDashboard = (props) => {
     e.preventDefault();
     if (plumbing.length > 0) {
       axios
-        .put("/api/plumbing", { plumbing: plumbing, image: image[0] })
+        .post("/api/plumbing", { plumbing: plumbing, image: image[0] })
         .then((response) => {
           setPlPic(false);
           setTempPlumbing([...tempPlumbing, {body: plumbing, date: new Date().toDateString(), status: 'Pending'}]);
@@ -232,7 +233,7 @@ const TDashboard = (props) => {
     e.preventDefault();
     if (electrical.length > 0) {
       axios
-        .put("/api/electrical", { electrical: electrical, image: image[0] })
+        .post("/api/electrical", { electrical: electrical, image: image[0] })
         .then((response) => {
           setElPic(false);
           setTempElectrical([...tempElectrical, {body: electrical, date: new Date().toDateString(), status: 'Pending'}]);
@@ -249,7 +250,7 @@ const TDashboard = (props) => {
     e.preventDefault();
     if (carpentry.length > 0) {
       axios
-        .put("/api/carpentry", { carpentry: carpentry, image: image[0] })
+        .post("/api/carpentry", { carpentry: carpentry, image: image[0] })
         .then((response) => {
           setCaPic(false);
           setTempCarpentry([...tempCarpentry, {body: carpentry, date: new Date().toDateString(), status: 'Pending'}]);
@@ -265,7 +266,7 @@ const TDashboard = (props) => {
     e.preventDefault();
     if (complaints.length > 0) {
       axios
-        .put("/api/complaints", { complaints: complaints, image: image[0] })
+        .post("/api/complaints", { complaints: complaints, image: image[0] })
         .then((response) => {
           setCoPic(false);
           setTempComplaints([...tempComplaints, {body: complaints, date: new Date().toDateString(), status: 'Pending'}]);
@@ -307,7 +308,6 @@ const TDashboard = (props) => {
     e.preventDefault();
     window.scrollTo(0, document.body.scrollHeight);
   };
-  console.log("yo", tempPlumbing, tempComplaints);
 
   return (
     <section className="tdashboard-contain">
@@ -483,8 +483,8 @@ const TDashboard = (props) => {
               <li>Electrical</li>
               <div className="issue-menu">
                 <p className='list-count'>
-                  {issues.electrical
-                    ? issues.electrical.length + tempElectrical.length
+                  {allIssues[0] && allIssues[0].length > 0 
+                    ? allIssues[0].length + tempElectrical.length
                     : 0}
                 </p>
                 <FontAwesomeIcon
@@ -499,7 +499,7 @@ const TDashboard = (props) => {
               <div className="issue-item">
                             { tempElectrical ? 
               <div className='temp-items'>
-                {issues
+                {tempElectrical
                   ? tempElectrical.map((item) => {
                       return (
                         <div className='item-list-container'>
@@ -518,8 +518,8 @@ const TDashboard = (props) => {
               </div>
            : null }
             <div className='item-reverse'>
-                {issues
-                  ? issues.electrical.map((item) => {
+                {allIssues[0].length > 0
+                  ? allIssues[0].map((item) => {
                       return (
                         <div className='item-list-container'>
                           <ul>
@@ -548,8 +548,8 @@ const TDashboard = (props) => {
               <li>Plumbing</li>
               <div className="issue-menu">
                 <p className='list-count'>
-                  {issues.plumbing
-                    ? issues.plumbing.length + tempPlumbing.length
+                  {allIssues[1]
+                    ? allIssues[1].length + tempPlumbing.length
                     : 0}
                 </p>
                 <FontAwesomeIcon
@@ -564,7 +564,7 @@ const TDashboard = (props) => {
               <div className="issue-item">
                             { tempPlumbing ? 
               <div className='temp-items'>
-                {issues
+                {tempPlumbing
                   ? tempPlumbing.map((item) => {
                       return (
                         <div className='item-list-container'>
@@ -584,8 +584,8 @@ const TDashboard = (props) => {
            : null }
                        <div className='item-reverse'>
 
-                {issues
-                  ? issues.plumbing.map((item) => {
+                {allIssues[1]
+                  ? allIssues[1].map((item) => {
                       return (
                         <div className='item-list-container'>
                           <ul>
@@ -616,8 +616,8 @@ const TDashboard = (props) => {
               <li>Carpentry</li>
               <div className="issue-menu">
                 <p className='list-count'>
-                  {issues.carpentry
-                    ? issues.carpentry.length + tempCarpentry.length
+                  {allIssues[2]
+                    ? allIssues[2].length + tempCarpentry.length
                     : 0}
                 </p>
                 <FontAwesomeIcon
@@ -632,7 +632,7 @@ const TDashboard = (props) => {
               <div className="issue-item">
                             { tempCarpentry ? 
               <div className='temp-items'>
-                {issues
+                {tempCarpentry
                   ? tempCarpentry.map((item) => {
                       return (
                         <div className='item-list-container'>
@@ -652,8 +652,8 @@ const TDashboard = (props) => {
            : null }
                                   <div className='item-reverse'>
 
-                {issues
-                  ? issues.carpentry.map((item) => {
+                {allIssues[3]
+                  ? allIssues[3].map((item) => {
                       return (
                         <div className='item-list-container'>
                           <ul>
@@ -682,8 +682,8 @@ const TDashboard = (props) => {
               <li>Complaints</li>
               <div className="issue-menu">
                 <p className='list-count'>
-                  {issues.complaints
-                    ? issues.complaints.length + tempComplaints.length
+                  {allIssues[3]
+                    ? allIssues[3].length + tempComplaints.length
                     : 0}
                 </p>
                 <FontAwesomeIcon
@@ -698,7 +698,7 @@ const TDashboard = (props) => {
               <div className="issue-item">
                             { tempComplaints ? 
               <div className='temp-items'>
-                {issues
+                {tempComplaints
                   ? tempComplaints.map((item) => {
                       return (
                         <div className='item-list-container'>
@@ -718,8 +718,8 @@ const TDashboard = (props) => {
            : null }
                                   <div className='item-reverse'>
 
-                {issues
-                  ? issues.complaints.map((item) => {
+                {allIssues[3]
+                  ? allIssues[3].map((item) => {
                       return (
                         <div className='item-list-container'>
                           <ul>

@@ -177,6 +177,12 @@ nav {
   height: 70%;
   width: 90%;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align:justify;
+  z-index: 99999999999999999;
+  
 
   @include respond(mdLg) {
     width: 95%;
@@ -185,11 +191,11 @@ nav {
 
 
   .user-content {
-
     width: 100%;
     height: 55px;
     display: flex;
     text-align: center;
+    justify-content: space-between;
     align-items: center;
     border: 1px solid lightgray;
     border-radius: 5px;
@@ -216,10 +222,11 @@ nav {
 
 
       .user-pic {
+
         width: 20px;
         background: white;
         margin-right: 5px;
-
+        z-index: -99999999;
       }
 
     }
@@ -243,7 +250,19 @@ nav {
     }
 
     .user-status {
-      width: 15%;
+      width: 20%;
+
+      p {
+        font-size: 1rem;
+
+      }
+      .pending {
+        color: red;
+        font-weight: bold;
+        
+      }
+
+
       @include respond(mdLg) {
         width: 20%;
       }
@@ -251,17 +270,52 @@ nav {
     }
 
     .user-action {
-      width: 10%;
+      width: 50px;
+      height: 80%;
+      align-items: center;
       display: flex;
       justify-content: space-around;
+      position: relative;
+      background: yellow;
+      cursor: pointer;
+      z-index: 99999999999999999999;
       @include respond(mdLg) {
         width: 20%;
+        cursor: pointer;
+        
       }
 
 
     }
 
+.user-action.drop {
+    .issue-dropdown {
+      display: none;
+    }
+  }
 
+    .issue-dropdown ul{
+
+      position: absolute;
+      right: 50px;
+      bottom: -70px;
+      height: 50px;
+      width: 70px;
+      padding: 10px;
+      margin: 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-direction: column;
+      background: $secondaryColor;
+      color: $thirdColor;
+
+      li:hover {
+        color: $primaryColor;
+        cursor: pointer;
+      }
+      
+    }
 
 
   }
@@ -323,4 +377,28 @@ nav {
   .navBar {
     cursor: pointer;
   }
+}
+
+.paginate {
+  width: 80%;
+  height: 40px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  
+}
+
+.paginate a {
+  padding: 10px;
+  margin: 8px;
+  border-radius: 10px;
+  border: 1px solid $thirdColor;
+  color: $thirdColor;
+  cursor: pointer;
+  outline: none;
+}
+
+.paginate a:hover {
+  color: white;
+  background: $thirdColor;
 }

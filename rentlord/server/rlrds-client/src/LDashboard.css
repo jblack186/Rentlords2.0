@@ -182,6 +182,18 @@
   height: 70%;
   width: 90%;
   border-radius: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  text-align: justify;
+  z-index: 99999999999999999;
 }
 
 @media (max-width: 1200px) {
@@ -198,6 +210,9 @@
   display: -ms-flexbox;
   display: flex;
   text-align: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -235,6 +250,7 @@
   width: 20px;
   background: white;
   margin-right: 5px;
+  z-index: -99999999;
 }
 
 .ldashboard-contain .mid-dash .user-content .user-addr {
@@ -258,7 +274,16 @@
 }
 
 .ldashboard-contain .mid-dash .user-content .user-status {
-  width: 15%;
+  width: 20%;
+}
+
+.ldashboard-contain .mid-dash .user-content .user-status p {
+  font-size: 1rem;
+}
+
+.ldashboard-contain .mid-dash .user-content .user-status .pending {
+  color: red;
+  font-weight: bold;
 }
 
 @media (max-width: 1200px) {
@@ -268,18 +293,60 @@
 }
 
 .ldashboard-contain .mid-dash .user-content .user-action {
-  width: 10%;
+  width: 50px;
+  height: 80%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-pack: distribute;
       justify-content: space-around;
+  position: relative;
+  background: yellow;
+  cursor: pointer;
+  z-index: 99999999999999999999;
 }
 
 @media (max-width: 1200px) {
   .ldashboard-contain .mid-dash .user-content .user-action {
     width: 20%;
+    cursor: pointer;
   }
+}
+
+.ldashboard-contain .mid-dash .user-content .user-action.drop .issue-dropdown {
+  display: none;
+}
+
+.ldashboard-contain .mid-dash .user-content .issue-dropdown ul {
+  position: absolute;
+  right: 50px;
+  bottom: -70px;
+  height: 50px;
+  width: 70px;
+  padding: 10px;
+  margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background: #f2f5f7;
+  color: #222629;
+}
+
+.ldashboard-contain .mid-dash .user-content .issue-dropdown ul li:hover {
+  color: #2a37e8;
+  cursor: pointer;
 }
 
 .react-datepicker-wrapper,
@@ -344,5 +411,32 @@
 
 .mobile .navBar {
   cursor: pointer;
+}
+
+.paginate {
+  width: 80%;
+  height: 40px;
+  list-style: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.paginate a {
+  padding: 10px;
+  margin: 8px;
+  border-radius: 10px;
+  border: 1px solid #222629;
+  color: #222629;
+  cursor: pointer;
+  outline: none;
+}
+
+.paginate a:hover {
+  color: white;
+  background: #222629;
 }
 /*# sourceMappingURL=LDashboard.css.map */
