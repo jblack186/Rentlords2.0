@@ -181,7 +181,6 @@ nav {
   flex-direction: column;
   justify-content: space-between;
   text-align:justify;
-  z-index: 99999999999999999;
   
 
   @include respond(mdLg) {
@@ -226,7 +225,6 @@ nav {
         width: 20px;
         background: white;
         margin-right: 5px;
-        z-index: -99999999;
       }
 
     }
@@ -278,7 +276,6 @@ nav {
       position: relative;
       background: yellow;
       cursor: pointer;
-      z-index: 99999999999999999999;
       @include respond(mdLg) {
         width: 20%;
         cursor: pointer;
@@ -401,4 +398,8 @@ nav {
 .paginate a:hover {
   color: white;
   background: $thirdColor;
+}
+
+.mod-container {
+  z-index: 999999999999999999999999999999;
 }

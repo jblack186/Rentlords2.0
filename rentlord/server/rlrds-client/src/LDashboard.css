@@ -193,7 +193,6 @@
       -ms-flex-pack: justify;
           justify-content: space-between;
   text-align: justify;
-  z-index: 99999999999999999;
 }
 
 @media (max-width: 1200px) {
@@ -250,7 +249,6 @@
   width: 20px;
   background: white;
   margin-right: 5px;
-  z-index: -99999999;
 }
 
 .ldashboard-contain .mid-dash .user-content .user-addr {
@@ -306,7 +304,6 @@
   position: relative;
   background: yellow;
   cursor: pointer;
-  z-index: 99999999999999999999;
 }
 
 @media (max-width: 1200px) {
@@ -438,5 +435,9 @@
 .paginate a:hover {
   color: white;
   background: #222629;
+}
+
+.mod-container {
+  z-index: 999999999999999999999999999999;
 }
 /*# sourceMappingURL=LDashboard.css.map */
