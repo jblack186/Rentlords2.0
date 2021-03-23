@@ -9,11 +9,10 @@ import "./LDashboard.css";
 import Pic from "./img/profileHead.jpeg";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import ReactPaginate from "react-paginate";
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+import { Modal, Button } from "react-bootstrap";
 import BootStrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+
 import {
   faUser,
   faClipboard,
@@ -24,6 +23,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import User from "./img/profile-user.svg";
 import Avatars from "@dicebear/avatars";
 import sprites from "@dicebear/avatars-identicon-sprites";
+import axios from "axios";
 
 const LDashboard = (props) => {
   const [startDate, setStartDate] = useState(new Date());
@@ -38,84 +38,46 @@ const LDashboard = (props) => {
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
 
-   const rowEvents = (e) =>{
-       console.log('yfa',e.target.value)
-      setModalInfo()
+   const rowEvents = {
+       onClick: (e, row) => {
+         setModalInfo(row)
+         toggleTrueFalse()
+       }
    }
 
    const toggleTrueFalse = () => {
      setShowMoadal(handleShow)
    }
 
-   const ModalCOntent = () => {
-     return (<div></div>)
-   }
-
-  const dropdown = (e) => {
-    e.target.classList.remove("drop");
-    console.log(e.target.classList);
+   const options = {
+    paginationSize: 4,
+    pageStartIndex: 1,
+    firstPageText: 'First',
+    prePageText: 'Back',
+    nextPageText: 'Next',
+    lastPageText: 'Last',
+    nextPageTitle: 'First page',
+    prePageTitle: 'Pre page',
+    firstPageTitle: 'Next page',
+    lastPageTitle: 'Last page',
+    showTotal: true,
+    disablePageTitle: true,
+    sizePerPageList: [{
+      text: '5', value: 5
+    }, {
+      text: '10', value: 10
+    }, {
+      text: 'All', value: issues.length
+    }] // A numeric array is also available. the purpose of above example is custom the text
   };
-
-  // const closeDropDown = (e) => {
-  //   let yea = document.getElementsByClassName("user-action")
-  //   console.log('yea', yea)
-
-  //   yea.map(item => {
-  //     item.classList.remove("drop")
-  //   })
-    
-  // };
-
-  const issuesPerPage = 5;
-  const pagesVisited = pageNumber * issuesPerPage;
-  const pageCount = Math.ceil(props.issues.length / issuesPerPage);
-
-  const changePage = ({ selected }) => {
-    setPageNumber(selected);
-  };
-
-  const columns = [
-    {dataField: "name", text: "Tenant Name"},
-    {dataField: "address", text: "Address"},
-    {dataField: "date", text: "Date"},
-    {dataField: "status", text: "Status"},
-    {dataField: "issue", text: "Issue"},
-
-  ]
-
-  const displayIssues = props.issues
-    ? props.issues
-        .slice(pagesVisited, pagesVisited + issuesPerPage)
-        .map((issue) => {
-          return (
-            <div className="user-content">
-              <div className="name-pic">
-                <img
-                  className="user-pic"
-                  src="https://avatars.dicebear.com/api/identicon/:seed.svg?colors=blue"
-                />
-                <li onClick={rowEvents} value={[issue.body, issue.name]} className="user-name">{issue.name}</li>
-              </div>
-              <li className="user-addr">32 Madison Terr</li>
-              <li className="user-date">{issue.date}</li>
-              <li className="user-status">
-                {issue.pending === true ? (
-                  <p className="pending">Pending</p>
-                ) : issue.recieved === true ? (
-                  <p>Recieved</p>
-                ) : issue.completed === true ? (
-                  <p>Completed</p>
-                ) : null}
-              </li>
-              {/* <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
-
+  
+   const ModalContent = () => {
+     return (<div className='mod-container'>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+   <Modal.Title>Tenant name: {modalInfo.name}</Modal.Title>
         </Modal.Header>
-                <Modal.Body>{issue.body}<p>{issue.name}</p></Modal.Body>
+                <Modal.Body><p>Work to be done- {modalInfo.body}</p></Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
@@ -124,36 +86,52 @@ const LDashboard = (props) => {
             Save Changes
           </Button>
         </Modal.Footer>
-      </Modal> */}
-            </div>
-          );
-        })
-    : null;
+      </Modal>
 
-  let arr = [];
-  console.log("boom", arr);
-  useEffect(() => {
-    if (props.issues.length > 0) {
-      props.issues.map((item) => {
-        console.log("items", item);
-      });
-      setCount(
-        props.issues[0].length +
-          props.issues[1].length +
-          props.issues[2].length +
-          props.issues[3].length
-      );
+     </div>)
+   }
+
+  const dropdown = (e) => {
+    e.target.classList.remove("drop");
+    console.log(e.target.classList);
+  };
+
+
+  const columns = [
+    {dataField: "name", text: "Tenant Name"},
+    {dataField: "address", text: "Address"},
+    {dataField: "date", text: "Date"},
+    {dataField: "status", text: "Status"},
+    {dataField: "Click for more", text: "Issue"},
+
+  ]
+
+
+              {/* <Button variant="primary" onClick={handleShow}>
+        Launch demo modal
+      </Button>
+
+     */}
+            
+  const getIssues = async () => {
+    try {
+      const data = await axios.get("/api/tenants-issues");
+      setIssues(data.data);
+    } catch(e) {
+      console.log(e)
     }
-  }, [props.issues]);
+  }
 
-  console.log("E", count);
+  useEffect(() => {
+    getIssues();
+  }, []);
 
-  let options = {};
+  console.log("E", issues);
+
   let avatars = new Avatars(sprites, options);
   let svg = avatars.create("custom-seed");
 
-  console.log("props", props.issues);
-  console.log("props2", props.issues[1]);
+  console.log("issues", issues);
 
   return (
     <section className="ldashboard-contain">
@@ -177,7 +155,7 @@ const LDashboard = (props) => {
         <div className="order-date">
           <ul>
             <li>All issues</li>
-            <li>Dispatch</li>
+            <li>Recieved</li>
             <li>Pending</li>
             <li>Completed</li>
           </ul>
@@ -193,33 +171,16 @@ const LDashboard = (props) => {
             />
           </div>
         </div>
-        <div className="bar-dash">
-          <ul>
-            <li className="name">Name</li>
-
-            <li className="addr">Address</li>
-            <li className="date">Date</li>
-            <li className="status">Status</li>
-            <li className="action">Issue</li>
-          </ul>
-        </div>
         <div className="mid-dash">
-          {displayIssues ? displayIssues : null}
-          {props.issues.length <= 0 ? null : (
-            <div>
-              <ReactPaginate
-                previousLabel={"Previous"}
-                nextLabel={"Next"}
-                pageCount={pageCount}
-                onPageChange={changePage}
-                containerClassName="paginate"
-                previousLinkClassName={"prevButton"}
-                nextLinkClassName={"nextButton"}
-                disabledClassName={"paginationDisabled"}
-                activeClassName={"paginationActive"}
-              />
-            </div>
-          )}
+          <BootStrapTable
+            keyField="_id"
+            data={issues}
+            columns={columns}
+            pagination={paginationFactory(options)}
+            rowEvents={rowEvents}
+           
+          />
+          {show ? <ModalContent /> : null}
         </div>
       </section>
     </section>

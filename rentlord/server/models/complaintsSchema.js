@@ -3,9 +3,7 @@ const {Schema} = mongoose
 
 const complaintSchema = new Schema({
     body : String,
-    pending : {type : Boolean , default : true},
-    recieved: {type: Boolean, default: false},
-    completed: {type: Boolean, default: false},
+    status: {type: String, default: 'Pending'},
     image: {type: String, default: ''},
     date: {type: String, default:  new Date().toDateString()},
     name: {type: String, default: ''},

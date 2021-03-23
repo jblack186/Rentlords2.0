@@ -70,9 +70,7 @@ module.exports = (server) => {
         const { plumbing, image  } = req.body;
         const plumbingSchema = new Plumbing({
             body : plumbing,
-            pending : true,
-            recieved: false,
-            completed: false,
+            status: 'Pending',
             image: image,
             date: new Date().toDateString(),
             name: req.user.wholeName,
@@ -97,9 +95,7 @@ module.exports = (server) => {
         const electricalSchema = new Electric({
             _user: req.user.id,
             body : electrical,
-            pending : true,
-            recieved: false,
-            completed: false,
+            status: 'Pending',
             image: image,
             date: new Date().toDateString(),
             name: req.user.wholeName,
@@ -125,9 +121,7 @@ module.exports = (server) => {
         const { carpentry, image  } = req.body;
         const carpentrySchema = new Carpentry({
             body : carpentry,
-            pending : true,
-            recieved: false,
-            completed: false,
+            status: 'Pending',
             image: image,
             date: new Date().toDateString(),
             name: req.user.wholeName,
@@ -150,9 +144,7 @@ module.exports = (server) => {
         const { complaints, image  } = req.body;
         const complaintSchema = new Complaints({
             body : complaints,
-            pending : true,
-            recieved: false,
-            completed: false,
+            status: 'Pending',
             image: image,
             date: new Date().toDateString(),
             name: req.user.wholeName,

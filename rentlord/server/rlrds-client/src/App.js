@@ -8,16 +8,20 @@ import LandlordPick from "./LandlordPick";
 import Setting from "./Setting";
 import axios from "axios";
 import "./TDashboard.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css'
 
 const App = (e) => {
   const [landlord, setLandlord] = useState("");
   const [issues, setIssues] = useState([]);
   const [tenant, setTenant] = useState("");
+  const [tenantIssues, setTenantIssues] = useState([]);
 
   useEffect(() => {
     axios
       .get("/api/tenants-issues")
       .then((res) => {
+        setTenantIssues(res.data);
         setIssues(res.data);
         console.log('RES', res.data)
       })
@@ -55,12 +59,8 @@ const App = (e) => {
       })
       .then((res) => {})
       .catch((err) => {});
-    axios
-      .get("/api/tenants-issues")
-      .then((res) => {
-        setIssues(res.data);
-      })
-      .catch((err) => {});
+  
+      
   };
 
   const changeCompleted = (e) => {
@@ -76,12 +76,7 @@ const App = (e) => {
       })
       .then((res) => {})
       .catch((err) => {});
-    axios
-      .get("/api/tenants-issues")
-      .then((res) => {
-        setIssues(res.data);
-      })
-      .catch((err) => {});
+    
   };
 
   const changeSituation = (e) => {
@@ -105,7 +100,7 @@ const App = (e) => {
       })
       .catch((err) => {});
   };
-  console.log("is", issues);
+  console.log("is", tenantIssues);
 
   return (
     <div>
@@ -133,8 +128,8 @@ const App = (e) => {
               changeCompleted={changeCompleted}
               changeRecieved={changeRecieved}
               landlord={landlord}
-              issues={issues}
-              {...props}
+              issues={tenantIssues}
+            //   {...props}
             />
           );
         }}
