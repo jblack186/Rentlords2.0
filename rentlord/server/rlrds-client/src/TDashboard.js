@@ -341,7 +341,7 @@ console.log('All',allIssues[0])
                 {!elPic ? (
                   <p onClick={elPicture}>
                     {" "}
-                    <FontAwesomeIcon className="camera" icon={faCamera} />
+                    <FontAwesomeIcon className="cameras" icon={faCamera} />
                   </p>
                 ) : (
                   <input
@@ -461,7 +461,7 @@ console.log('All',allIssues[0])
       </section>
       <section className="notifications">
         <div className="top-notifications">
-          <Link to="/settings">
+          <Link to={{pathname:"/settings"}}>
             <div className="user-pic-holder">
               {props.tenant && props.tenant.picture.length > 0 ? (
                 <img src={props.tenant.picture} alt="your-avatar" />

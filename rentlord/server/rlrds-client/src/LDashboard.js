@@ -102,7 +102,7 @@ const LDashboard = (props) => {
     {dataField: "address", text: "Address"},
     {dataField: "date", text: "Date"},
     {dataField: "status", text: "Status"},
-    {dataField: "Click for more", text: "Issue"},
+    {dataField: "category", text: "category"},
 
   ]
 
@@ -145,7 +145,7 @@ const LDashboard = (props) => {
         <div className="top-dash">
           <div className="issues-header">
             <h3>Issues</h3>
-            <p>0 orders found</p>
+            <p>{issues.length} orders found</p>
           </div>
           <div className="welcome">
             <p>Welcome back, {props.landlord.username}</p>
