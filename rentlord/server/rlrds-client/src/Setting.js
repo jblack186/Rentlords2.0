@@ -15,7 +15,7 @@ const Settings = (props) => {
 const uploadImage = async e => {
     const files = e.target.files
     console.log(files[0].size)
-    if (files[0].size < 124000) {
+    if (files[0].size < 12400000000) {
     const data = new FormData()
     data.append('file', files[0])
     data.append('upload_preset', 'rentlords')
